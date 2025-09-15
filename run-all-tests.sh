@@ -1,7 +1,7 @@
 # Temporary script to run all tests listed in all-test-files.txt
 #!/bin/bash
 
-START_LINE=101
+START_LINE=220
 
 
 tail -n +$START_LINE all-test-files.txt | while read -r file; do

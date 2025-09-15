@@ -14,6 +14,9 @@ const connection = common.createConnection();
 
 const payload = 'привет, мир';
 
+// Singlestore does not allow to set character_set_results variable it is read only in SingleStore. 
+// https://docs.singlestore.com/cloud/reference/sql-reference/character-encoding/specifying-character-set-and-collation-for-workspaces/
+
 function tryEncoding(encoding, cb) {
   connection.query('set character_set_results = ?', [encoding], (err) => {
     assert.ifError(err);
@@ -25,7 +28,7 @@ function tryEncoding(encoding, cb) {
       }
       assert.equal(
         mysql.CharsetToEncoding[fields[0].characterSet],
-        iconvEncoding
+        'utf8'
       );
       assert.equal(fields[0].name, payload);
       assert.equal(rows[0][fields[0].name], payload);
@@ -45,7 +48,7 @@ function tryEncodingExecute(encoding, cb) {
       }
       assert.equal(
         mysql.CharsetToEncoding[fields[0].characterSet],
-        iconvEncoding
+        'utf8'
       );
       // TODO: figure out correct metadata encodings setup for binary protocol
       //  assert.equal(fields[0].name, payload);

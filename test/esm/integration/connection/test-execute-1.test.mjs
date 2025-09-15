@@ -54,7 +54,7 @@ const common = require('../../../common.test.cjs');
         '`title` varchar(255) DEFAULT NULL,',
         '`text` varchar(255) DEFAULT NULL,',
         'PRIMARY KEY (`id`)',
-        ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+        ')',
       ].join('\n')
     );
 

@@ -9,6 +9,12 @@ if (`${process.env.MYSQL_CONNECTION_URL}`.includes('pscale_pw_')) {
   process.exit(0);
 }
 
+// Handle uncaught assertion errors to ensure connection closes
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+  connection.end(() => process.exit(1));
+});
+
 const connection = common.createConnection({ charset: 'UTF8MB4_GENERAL_CI' });
 connection.query('drop table if exists __test_client_encodings');
 connection.query(
