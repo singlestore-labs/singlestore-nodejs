@@ -1,7 +1,7 @@
 {
-  "name": "mysql2",
+  "name": "singlestore_nodejs",
   "version": "3.14.3",
-  "description": "fast mysql driver. Implements core protocol, prepared statements, ssl and compression in native JS",
+  "description": "SingleStore Node.js driver. Implements core protocol, prepared statements, ssl and compression in native JS",
   "main": "index.js",
   "typings": "typings/mysql/index",
   "type": "commonjs",

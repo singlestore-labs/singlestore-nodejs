@@ -1,0 +1,222 @@
+## This is temporary file created to run each test through a script 'run-all-tests.sh'
+ test/common.test.cjs
+ ## test/esm/integration/connection/test-column-inspect.test.mjs
+ test/esm/integration/connection/test-execute-1.test.mjs
+ test/esm/integration/connection/test-vector.test.mjs
+ test/esm/integration/named-placeholders.test.mjs
+ test/esm/integration/parsers/execute-results-creation.test.mjs
+ test/esm/integration/parsers/json-parse.test.mjs
+ test/esm/integration/parsers/json-string.test.mjs
+ test/esm/integration/parsers/query-results-creation.test.mjs
+ test/esm/integration/parsers/typecast-field-datetime.test.mjs
+ test/esm/integration/parsers/typecast-field-string.test.mjs
+ test/esm/integration/pool-cluster/test-promise-wrapper.test.mjs
+ test/esm/integration/test-pool.test.mjs
+ test/esm/regressions/2052.test.mjs
+ test/esm/unit/check-extensions.test.mjs
+ test/esm/unit/parsers/big-numbers-strings-binary-sanitization.test.mjs
+ test/esm/unit/parsers/big-numbers-strings-text-sanitization.test.mjs
+ test/esm/unit/parsers/cache-key-serialization.test.mjs
+ test/esm/unit/parsers/ensure-safe-binary-fields.test.mjs
+ test/esm/unit/parsers/ensure-safe-text-fields.test.mjs
+ test/esm/unit/parsers/support-big-numbers-binary-sanitization.test.mjs
+ test/esm/unit/parsers/support-big-numbers-text-sanitization.test.mjs
+ test/esm/unit/parsers/timezone-binary-sanitization.test.mjs
+ test/esm/unit/parsers/timezone-text-sanitization.test.mjs
+ test/esm/unit/protocol/SqlString.test.mjs
+ test/integration/config/test-connect-timeout.test.cjs
+ test/integration/config/test-typecast-global-false.test.cjs
+ test/integration/config/test-typecast-global-option.test.cjs
+ ## test/integration/connection/encoding/test-charset-results.test.cjs
+ ## test/integration/connection/encoding/test-client-encodings.test.cjs
+ ## test/integration/connection/encoding/test-non-bmp-chars.test.cjs
+ test/integration/connection/encoding/test-track-encodings.test.cjs
+ test/integration/connection/test-binary-charset-string.test.cjs
+ ## test/integration/connection/test-binary-longlong.test.cjs
+ test/integration/connection/test-binary-multiple-results.test.cjs
+ test/integration/connection/test-binary-notnull-nulls.test.cjs
+ test/integration/connection/test-buffer-params.test.cjs
+ test/integration/connection/test-change-user-multi-factor.test.cjs
+ test/integration/connection/test-change-user-plugin-auth.test.cjs
+ test/integration/connection/test-change-user.test.cjs
+ test/integration/connection/test-charset-encoding.test.cjs
+ test/integration/connection/test-connect-after-connection-error.test.cjs
+ test/integration/connection/test-connect-after-connection.test.cjs
+ test/integration/connection/test-connect-connection-closed-error.test.cjs
+ test/integration/connection/test-connect-sha1.test.cjs
+ test/integration/connection/test-connect-time-error.test.cjs
+ test/integration/connection/test-connect-with-uri.test.cjs
+ test/integration/connection/test-connection-reset-while-closing.test.cjs
+ test/integration/connection/test-custom-date-parameter.test.cjs
+ ## test/integration/connection/test-date-parameter.test.cjs
+ ## test/integration/connection/test-datetime.test.cjs
+ ## test/integration/connection/test-decimals-as-numbers.test.cjs
+ test/integration/connection/test-disconnects.test.cjs
+ test/integration/connection/test-error-events.test.cjs
+ test/integration/connection/test-errors.test.cjs
+ test/integration/connection/test-execute-and-unprepare.test.cjs
+ ## test/integration/connection/test-execute-bind-boolean.test.cjs
+ ## test/integration/connection/test-execute-bind-date.test.cjs
+ test/integration/connection/test-execute-bind-function.test.cjs
+ ## test/integration/connection/test-execute-bind-json.test.cjs
+ ## test/integration/connection/test-execute-bind-null.test.cjs
+ ## test/integration/connection/test-execute-bind-number.test.cjs
+ test/integration/connection/test-execute-bind-undefined.test.cjs
+ ## test/integration/connection/test-execute-cached.test.cjs
+ ## test/integration/connection/test-execute-newdecimal.test.cjs
+ test/integration/connection/test-execute-nocolumndef.test.cjs
+ test/integration/connection/test-execute-null-bitmap.test.cjs
+ test/integration/connection/test-execute-order.test.cjs
+ test/integration/connection/test-execute-signed.test.cjs
+ ## test/integration/connection/test-execute-type-casting.test.cjs
+ ## test/integration/connection/test-insert-bigint-big-number-strings.test.cjs
+ ## test/integration/connection/test-insert-bigint.test.cjs
+ test/integration/connection/test-insert-json.test.cjs
+ test/integration/connection/test-insert-large-blob.test.cjs
+ test/integration/connection/test-insert-negative-ai.test.cjs
+ test/integration/connection/test-insert-results.test.cjs
+ ## test/integration/connection/test-invalid-date-result.test.cjs
+ test/integration/connection/test-load-infile.test.cjs
+ test/integration/connection/test-multiple-results.test.cjs
+ test/integration/connection/test-named-placeholders.test.cjs
+ test/integration/connection/test-nested-tables-query.test.cjs
+ test/integration/connection/test-null-buffer.test.cjs
+ test/integration/connection/test-null-double.test.cjs
+ test/integration/connection/test-null-int.test.cjs
+ test/integration/connection/test-null.test.cjs
+ test/integration/connection/test-parameters-questionmark.test.cjs
+ ## test/integration/connection/test-prepare-and-close.test.cjs
+ ## test/integration/connection/test-prepare-simple.test.cjs
+ ## test/integration/connection/test-prepare-then-execute.test.cjs
+ test/integration/connection/test-protocol-errors.test.cjs
+ test/integration/connection/test-query-timeout.test.cjs
+ test/integration/connection/test-query-zero.test.cjs
+ test/integration/connection/test-quit.test.cjs
+ ## test/integration/connection/test-select-1.test.cjs
+ test/integration/connection/test-select-empty-string.test.cjs
+ ## test/integration/connection/test-select-json.test.cjs
+ test/integration/connection/test-select-negative.test.cjs
+ ## test/integration/connection/test-select-ssl.test.cjs
+ test/integration/connection/test-select-utf8.test.cjs
+ test/integration/connection/test-server-listen.test.cjs
+ ## test/integration/connection/test-signed-tinyint.test.cjs
+ test/integration/connection/test-stream-errors.test.cjs
+ ## test/integration/connection/test-stream.test.cjs
+ test/integration/connection/test-then-on-query.test.cjs
+ ## test/integration/connection/test-timestamp.test.cjs
+ ## test/integration/connection/test-track-state-change.test.cjs
+ test/integration/connection/test-transaction-commit.test.cjs
+ test/integration/connection/test-transaction-rollback.test.cjs
+ ## test/integration/connection/test-type-cast-null-fields-execute.test.cjs
+ test/integration/connection/test-type-cast-null-fields.test.cjs
+ ## test/integration/connection/test-type-casting-execute.test.cjs
+ ## test/integration/connection/test-type-casting.test.cjs
+ ## test/integration/connection/test-typecast-execute.test.cjs
+ ## test/integration/connection/test-typecast-geometry-execute.test.cjs
+ ## test/integration/connection/test-typecast-geometry.test.cjs
+ test/integration/connection/test-typecast-overwriting-execute.test.cjs
+ test/integration/connection/test-typecast-overwriting.test.cjs
+ ## test/integration/connection/test-typecast.test.cjs
+ test/integration/connection/test-update-changed-rows.test.cjs
+ test/integration/connection/type-casting-tests.test.cjs
+ test/integration/promise-wrappers/test-async-stack.test.cjs
+ test/integration/promise-wrappers/test-promise-wrappers.test.cjs
+ ## test/integration/regressions/test-#433.test.cjs
+ test/integration/regressions/test-#442.test.cjs
+ test/integration/regressions/test-#485.test.cjs
+ ## test/integration/regressions/test-#617.test.cjs
+ ## test/integration/regressions/test-#629.test.cjs
+ test/integration/regressions/test-#82.test.cjs
+ test/integration/test-auth-switch-multi-factor.test.cjs
+ test/integration/test-auth-switch-plugin-async-error.test.cjs
+ test/integration/test-auth-switch-plugin-error.test.cjs
+ test/integration/test-auth-switch.test.cjs
+ test/integration/test-handshake-unknown-packet-error.test.cjs
+ test/integration/test-multi-result-streaming.test.cjs
+ test/integration/test-pool-connect-error.test.cjs
+ test/integration/test-pool-disconnect.test.cjs
+ test/integration/test-pool-end.test.cjs
+ test/integration/test-pool-release-idle-connection-replicate.test.cjs
+ test/integration/test-pool-release-idle-connection-timeout.test.cjs
+ test/integration/test-pool-release-idle-connection.test.cjs
+ test/integration/test-pool-release.test.cjs
+ test/integration/test-rows-as-array.test.cjs
+ ## test/integration/test-server-close.test.cjs
+ test/tsc-build/helpers.test.ts
+ test/tsc-build/index.test.ts
+ test/tsc-build/mysql/baseConnection.test.ts
+ test/tsc-build/mysql/constants/CharsetToEncoding.test.ts
+ test/tsc-build/mysql/constants/Charsets.test.ts
+ test/tsc-build/mysql/constants/Types.test.ts
+ test/tsc-build/mysql/createConnection/callbacks/execute.test.ts
+ test/tsc-build/mysql/createConnection/callbacks/query.test.ts
+ test/tsc-build/mysql/createConnection/promise/execute.test.ts
+ test/tsc-build/mysql/createConnection/promise/query.test.ts
+ test/tsc-build/mysql/createPool/callbacks/connection.test.ts
+ test/tsc-build/mysql/createPool/callbacks/createPool.test.ts
+ test/tsc-build/mysql/createPool/callbacks/execute.test.ts
+ test/tsc-build/mysql/createPool/callbacks/getConnection.test.ts
+ test/tsc-build/mysql/createPool/callbacks/query.test.ts
+ test/tsc-build/mysql/createPool/callbacks/release.test.ts
+ test/tsc-build/mysql/createPool/callbacks/releaseConnection.test.ts
+ test/tsc-build/mysql/createPool/promise/connection.test.ts
+ test/tsc-build/mysql/createPool/promise/execute.test.ts
+ test/tsc-build/mysql/createPool/promise/getConnection.test.ts
+ test/tsc-build/mysql/createPool/promise/promise.test.ts
+ test/tsc-build/mysql/createPool/promise/query.test.ts
+ test/tsc-build/mysql/createPool/promise/release.test.ts
+ test/tsc-build/mysql/createPool/promise/releaseConnection.test.ts
+ test/tsc-build/mysql/createPoolCluster/add.test.ts
+ test/tsc-build/mysql/createPoolCluster/getConnection.test.ts
+ test/tsc-build/mysql/createPoolCluster/of/getConnection.test.ts
+ test/tsc-build/mysql/createPoolCluster/of/of.test.ts
+ test/tsc-build/mysql/createPoolCluster/remove.test.ts
+ test/tsc-build/mysql/parsers/clearParserCache.test.ts
+ test/tsc-build/mysql/parsers/setMaxParserCache.test.ts
+ test/tsc-build/promise/baseConnection.test.ts
+ test/tsc-build/promise/constants/CharsetToEncoding.test.ts
+ test/tsc-build/promise/constants/Charsets.test.ts
+ test/tsc-build/promise/constants/Types.test.ts
+ test/tsc-build/promise/createConnection/execute.test.ts
+ test/tsc-build/promise/createConnection/query.test.ts
+ test/tsc-build/promise/createPool/connection.test.ts
+ test/tsc-build/promise/createPool/createPool.test.ts
+ test/tsc-build/promise/createPool/execute.test.ts
+ test/tsc-build/promise/createPool/getConnection.test.ts
+ test/tsc-build/promise/createPool/query.test.ts
+ test/tsc-build/promise/createPool/release.test.ts
+ test/tsc-build/promise/createPool/releaseConnection.test.ts
+ test/tsc-build/promise/createPoolCluster/add.test.ts
+ test/tsc-build/promise/createPoolCluster/getConnection.test.ts
+ test/tsc-build/promise/createPoolCluster/of/getConnection.test.ts
+ test/tsc-build/promise/createPoolCluster/of/of.test.ts
+ test/tsc-build/promise/parsers/clearParserCache.test.ts
+ test/tsc-build/promise/parsers/setMaxParserCache.test.ts
+ test/tsc-build/strict-checks/ProcedureCallPacket.test.ts
+ test/tsc-build/strict-checks/enableKeepAlive-and-keepAliveInitialDelay.test.ts
+ test/tsc-build/strict-checks/execute.test.ts
+ test/tsc-build/strict-checks/query.test.ts
+ test/tsc-build/strict-checks/typeCast.test.ts
+ test/unit/commands/test-query.test.cjs
+ test/unit/commands/test-quit.test.cjs
+ test/unit/connection/test-connection_config.test.cjs
+ test/unit/packets/test-column-definition.test.cjs
+ test/unit/packets/test-datetime.test.cjs
+ test/unit/packets/test-ok-autoinc.test.cjs
+ test/unit/packets/test-ok-sessiontrack.test.cjs
+ test/unit/packets/test-text-row.test.cjs
+ test/unit/packets/test-time.test.cjs
+ test/unit/parsers/test-text-parser.test.cjs
+ test/unit/pool-cluster/test-connection-error-remove.test.cjs
+ test/unit/pool-cluster/test-connection-order.test.cjs
+ test/unit/pool-cluster/test-connection-retry.test.cjs
+ test/unit/pool-cluster/test-connection-rr.test.cjs
+ test/unit/pool-cluster/test-query.test.cjs
+ test/unit/pool-cluster/test-remove-by-name.test.cjs
+ test/unit/pool-cluster/test-remove-by-pattern.test.cjs
+ test/unit/pool-cluster/test-restore-events.test.cjs
+ test/unit/pool-cluster/test-restore.test.cjs
+ test/unit/test-packet-parser.test.cjs
+ website/test/unit/check-extensions.test.ts
+ website/test/unit/external-code-embed.test.ts
+ website/test/utils/gen-expected-extract-results.test.ts
