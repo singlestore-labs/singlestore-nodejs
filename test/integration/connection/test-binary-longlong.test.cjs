@@ -4,6 +4,12 @@ const { assert } = require('poku');
 const common = require('../../common.test.cjs');
 
 const conn = common.createConnection();
+// Handle uncaught assertion errors to ensure connection closes
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+  connection.end(() => process.exit(1));
+});
+
 
 conn.query(
   'CREATE TEMPORARY TABLE `tmp_longlong` ( ' +
@@ -67,7 +73,7 @@ conn.connect((err) => {
     started++;
     conn.query(
       {
-        sql: 'SELECT * from tmp_longlong',
+        sql: 'SELECT * from tmp_longlong order by id',
         supportBigNumbers: supportBigNumbers,
         bigNumberStrings: bigNumberStrings,
       },
@@ -86,7 +92,7 @@ conn.connect((err) => {
     started++;
     conn.execute(
       {
-        sql: 'SELECT * from tmp_longlong',
+        sql: 'SELECT * from tmp_longlong order by id',
         supportBigNumbers: supportBigNumbers,
         bigNumberStrings: bigNumberStrings,
       },
