@@ -31,10 +31,12 @@ const testEncoding = function (err) {
     );
   });
 
-  connection.query('SELECT * from `test-charset-encoding`', (err, results) => {
+  connection.query('SELECT * from `test-charset-encoding` ORDER BY id', (err, results) => {
     assert.ifError(err);
     resultData = results;
+    console.log(resultData)
   });
+  
   connection.end();
 };
 
@@ -43,7 +45,7 @@ const testEncoding = function (err) {
   connection.query('DROP TABLE IF EXISTS `test-charset-encoding`', () => {
     connection.query(
       'CREATE TABLE IF NOT EXISTS `test-charset-encoding` ' +
-        '( `field` VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci)',
+        '( `id` INT AUTO_INCREMENT PRIMARY KEY, `field` VARCHAR(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci)',
       (err) => {
         assert.ifError(err);
         connection.query('DELETE from `test-charset-encoding`', testEncoding);
