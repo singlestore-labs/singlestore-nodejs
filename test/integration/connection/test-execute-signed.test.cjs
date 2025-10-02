@@ -26,7 +26,7 @@ connection.query(
   [-5, 8000000]
 );
 
-connection.execute('SELECT * from test_table', [], (err, _rows) => {
+connection.execute('SELECT * from test_table order by id', [], (err, _rows) => {
   if (err) {
     throw err;
   }

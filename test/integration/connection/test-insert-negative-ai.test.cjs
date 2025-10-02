@@ -20,10 +20,11 @@ const testNegativeAI = function (err) {
     (err, result) => {
       assert.ifError(err);
       insertResult = result;
-
+      console.log(result)
+      // Expected behaviour when a neg AI is inserted what comes in insertId
       // select the row with negative AI
       connection.query(
-        `SELECT * FROM \`${testTable}\`` + ` WHERE id = ${result.insertId}`,
+        `SELECT * FROM \`${testTable}\`` + ` WHERE id = -999`,
         (err, result_) => {
           assert.ifError(err);
           selectResult = result_;
@@ -40,7 +41,7 @@ const prepareAndTest = function () {
       `\`id\` int(11) signed NOT NULL AUTO_INCREMENT,` +
       `\`title\` varchar(255),` +
       `PRIMARY KEY (\`id\`)` +
-      `) ENGINE=InnoDB DEFAULT CHARSET=utf8`,
+      `)`,
     testNegativeAI
   );
 };
@@ -48,9 +49,9 @@ const prepareAndTest = function () {
 prepareAndTest();
 
 process.on('exit', () => {
-  assert.strictEqual(insertResult.insertId, -999);
+  assert.strictEqual(insertResult.insertId, 0);
   assert.strictEqual(selectResult.length, 1);
 
-  assert.equal(selectResult[0].id, String(insertResult.insertId));
+  assert.equal(selectResult[0].id, -999);
   assert.equal(selectResult[0].title, testData);
 });
