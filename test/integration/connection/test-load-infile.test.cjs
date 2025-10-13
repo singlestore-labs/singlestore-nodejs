@@ -20,7 +20,7 @@ connection.query(
     '`id` int(11) unsigned NOT NULL AUTO_INCREMENT,',
     '`title` varchar(255),',
     'PRIMARY KEY (`id`)',
-    ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+    ')',
   ].join('\n')
 );
 
@@ -45,7 +45,7 @@ connection.query(
 );
 
 let rows;
-connection.query(`SELECT * FROM ${table}`, (err, _rows) => {
+connection.query(`SELECT * FROM ${table} order by id`, (err, _rows) => {
   if (err) {
     throw err;
   }

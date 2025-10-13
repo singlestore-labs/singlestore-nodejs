@@ -80,7 +80,7 @@ const fields2 = clone(fields1);
 fields2[0].name = '2';
 
 const tests = [
-  ['select * from some_rows', [select3, sr_fields, 1]], //  select 3 rows
+  ['select * from some_rows order by test', [select3, sr_fields, 1]], //  select 3 rows
   [
     'SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT; SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS;',
     twoInsertResult,
@@ -98,11 +98,11 @@ const tests = [
   ['set @a = 1; select * from no_rows', [[rs1, []], [undefined, nr_fields], 2]], // insert + select 0 rows
   ['select * from no_rows; set @a = 1', [[[], rs2], [nr_fields, undefined], 2]], //  select 0 rows + insert
   [
-    'set @a = 1; select * from some_rows',
+    'set @a = 1; select * from some_rows order by test',
     [[rs1, select3], [undefined, sr_fields], 2],
   ], // insert + select 3 rows
   [
-    'select * from some_rows; set @a = 1',
+    'select * from some_rows order by test; set @a = 1',
     [[select3, rs2], [sr_fields, undefined], 2],
   ], //  select 3 rows + insert
 ];

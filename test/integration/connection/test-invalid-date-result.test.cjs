@@ -12,6 +12,7 @@ const process = require('node:process');
 const connection = common.createConnection();
 
 let rows = undefined;
+// Skipping this test as these modes and performance_schema DB does not exists in Singlestore
 
 // Disable NO_ZERO_DATE mode and NO_ZERO_IN_DATE mode to ensure the old
 // behaviour.

@@ -12,7 +12,7 @@ connection.query('CREATE TEMPORARY TABLE t (i int)');
 connection.query('INSERT INTO t VALUES(null)');
 connection.query('INSERT INTO t VALUES(123)');
 
-connection.query('SELECT * from t', (err, _rows) => {
+connection.query('SELECT * from t order by i', (err, _rows) => {
   if (err) {
     throw err;
   }
