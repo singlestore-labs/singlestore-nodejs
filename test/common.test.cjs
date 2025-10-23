@@ -186,6 +186,15 @@ exports.createConnectionWithURI = function () {
   return driver.createConnection({ uri: configURI });
 };
 
+exports.createConnectionWithSessionVars = function () {
+  const driver = require('../index.js');
+
+  return driver.createConnection({
+    uri: configURI,
+    sessionVariables: { sql_select_limit: 100 },
+  });
+};
+
 exports.createTemplate = function () {
   const jade = require('jade');
   const template = require('node:fs').readFileSync(
