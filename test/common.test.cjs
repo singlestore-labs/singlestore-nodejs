@@ -191,7 +191,11 @@ exports.createConnectionWithSessionVars = function () {
 
   return driver.createConnection({
     uri: configURI,
-    sessionVariables: { sql_select_limit: 100 },
+    sessionVariables: {
+      sql_select_limit: 100,
+      sql_mode: 'STRICT_ALL_TABLES',
+      autocommit: 0,
+    },
   });
 };
 
