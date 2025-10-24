@@ -13,8 +13,8 @@ if (process.env.MYSQL_CONNECTION_URL) {
 
 const connection = common.createConnectionWithSessionVars();
 
-let rows = undefined;
-let fields = undefined;
+let rows;
+let fields;
 connection.query(
   'SELECT @@sql_select_limit, @@sql_mode, @@autocommit',
   (err, _rows, _fields) => {
