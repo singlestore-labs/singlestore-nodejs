@@ -48,7 +48,7 @@ connection.query(
     ` \`${testFields[2]}\` int(11) NOT NULL,`,
     ` \`${testFields[3]}\` int(11) NOT NULL,`,
     ` PRIMARY KEY (\`${testFields[0]}\`)`,
-    ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+    ')',
   ].join(' '),
   (err) => {
     assert.ifError(err);

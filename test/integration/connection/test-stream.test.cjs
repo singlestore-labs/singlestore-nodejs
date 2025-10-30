@@ -19,7 +19,7 @@ connection.query(
     '`title` varchar(255) DEFAULT NULL,',
     '`text` varchar(255) DEFAULT NULL,',
     'PRIMARY KEY (`id`)',
-    ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+    ')',
   ].join('\n'),
   (err) => {
     if (err) {
@@ -49,14 +49,14 @@ connection.execute(
     }
   }
 );
-connection.execute('SELECT * FROM announcements', async (err, _rows) => {
+connection.execute('SELECT * FROM announcements order by id', async (err, _rows) => {
   rows = _rows;
-  const s1 = connection.query('SELECT * FROM announcements').stream();
+  const s1 = connection.query('SELECT * FROM announcements order by id').stream();
   s1.on('data', (row) => {
     rows1.push(row);
   });
   s1.on('end', () => {
-    const s2 = connection.execute('SELECT * FROM announcements').stream();
+    const s2 = connection.execute('SELECT * FROM announcements order by id').stream();
     s2.on('data', (row) => {
       rows2.push(row);
     });
@@ -64,11 +64,11 @@ connection.execute('SELECT * FROM announcements', async (err, _rows) => {
       connection.end();
     });
   });
-  const s3 = connection.query('SELECT * FROM announcements').stream();
+  const s3 = connection.query('SELECT * FROM announcements order by id').stream();
   for await (const row of s3) {
     rows3.push(row);
   }
-  const s4 = connection.query('SELECT * FROM announcements').stream();
+  const s4 = connection.query('SELECT * FROM announcements order by id').stream();
   for await (const row of s4) {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     rows4.push(row);
