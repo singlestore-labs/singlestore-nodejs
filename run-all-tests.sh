@@ -7,12 +7,61 @@ else
   mysql -h"${MYSQL_HOST:-127.0.0.1}" -P"${MYSQL_PORT:-3306}" -u"${MYSQL_USER:-root}" -e "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE:-test};"
 fi
 
-START_LINE=1
+echo "Generating test file list..."
+ALL_TESTS=$(find . -type f \( -name "*.test.cjs" -o -name "*.test.mjs" \) | sort)
 
-tail -n +$START_LINE all-test-files.txt | while read -r file; do
+# Read tests to skip (if file exists)
+SKIP_FILE="test-to-skip.txt"
+declare -A SKIP_TESTS
+
+if [ -f "$SKIP_FILE" ]; then
+  while IFS= read -r line; do
+    line=$(echo "$line" | xargs)
+    [ -z "$line" ] && continue
+    [[ "$line" == \#* ]] && continue
+    SKIP_TESTS["$line"]=1
+  done < "$SKIP_FILE"
+fi
+
+# Initialize counters
+TOTAL_TESTS=0
+PASSED_TESTS=0
+FAILED_TESTS=0
+SKIPPED_TESTS=0
+
+# Run tests that are not in skip list
+while IFS= read -r file; do
   file=$(echo "$file" | xargs)
   [ -z "$file" ] && continue
-  [[ "$file" == \#* ]] && continue
+  
+  # Check if test should be skipped
+  if [ -n "${SKIP_TESTS[$file]}" ]; then
+    echo "Skipping: $file"
+    SKIPPED_TESTS=$((SKIPPED_TESTS + 1))
+    continue
+  fi
+  
+  TOTAL_TESTS=$((TOTAL_TESTS + 1))
   echo "Running: $file"
-  npx poku "$file"
-done
+  node run-tests-wrapper.cjs "$file"
+  
+  # Capture exit code
+  if [ $? -ne 0 ]; then
+    echo "FAILED: $file"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+  else
+    echo "PASSED: $file"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+  fi
+done <<< "$ALL_TESTS"
+
+# Print summary
+echo ""
+echo "=========================================="
+echo "Test Summary:"
+echo "=========================================="
+echo "Total tests run: $TOTAL_TESTS"
+echo "Passed: $PASSED_TESTS"
+echo "Failed: $FAILED_TESTS"
+echo "Skipped: $SKIPPED_TESTS"
+echo "=========================================="

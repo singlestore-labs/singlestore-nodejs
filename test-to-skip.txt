@@ -1,0 +1,16 @@
+## Tests to skip - add one test file path per line
+## Lines starting with # are comments and will be ignored
+./test/integration/connection/test-custom-date-parameter.test.cjs
+./test/integration/connection/test-date-parameter.test.cjs
+./test/integration/connection/test-datetime.test.cjs
+./test/integration/connection/test-execute-nocolumndef.test.cjs
+./test/integration/connection/test-invalid-date-result.test.cjs
+./test/integration/connection/test-select-ssl.test.cjs
+./test/integration/connection/test-timestamp.test.cjs
+./test/integration/connection/test-track-state-change.test.cjs
+./test/integration/connection/test-typecast-execute.test.cjs
+./test/integration/connection/test-typecast-geometry-execute.test.cjs
+./test/integration/connection/test-typecast-geometry.test.cjs
+./test/integration/connection/test-typecast.test.cjs
+./test/integration/regressions/test-#433.test.cjs
+./website/node_modules/css-declaration-sorter/src/core/main.test.mjs

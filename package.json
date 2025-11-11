@@ -1,10 +1,11 @@
 {
   "name": "singlestore_nodejs",
-  "version": "3.14.3",
-  "description": "SingleStore Node.js driver. Implements core protocol, prepared statements, ssl and compression in native JS",
+  "version": "1.0.0",
+  "description": "Fast SingleStore driver for Node.js. Implements core protocol, prepared statements, SSL and compression in native JS",
   "main": "index.js",
-  "typings": "typings/mysql/index",
-  "type": "commonjs",
+  "directories": {
+    "examples": "examples"
+  },
   "scripts": {
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
@@ -18,17 +19,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sidorares/node-mysql2.git"
+    "url": "https://github.com/singlestore-labs/node-mysql2"
   },
-  "homepage": "https://sidorares.github.io/node-mysql2/docs",
   "keywords": [
-    "mysql",
-    "client",
-    "server"
+    "singlestore",
+    "memsql",
+    "database",
+    "db",
+    "sql",
+    "prepared",
+    "statements",
+    "distributed",
+    "analytics",
+    "realtime",
+    "columnstore",
+    "rowstore",
+    "wire",
+    "protocol",
+    "native",
+    "fast"
   ],
   "files": [
     "lib",
-    "typings/mysql",
+    "typings",
     "index.js",
     "index.d.ts",
     "promise.js",
@@ -43,8 +56,13 @@
   "engines": {
     "node": ">= 8.0"
   },
-  "author": "Andrey Sidorov <andrey.sidorov@gmail.com>",
+  "author": "",
   "license": "MIT",
+  "homepage": "https://github.com/singlestore-labs/node-mysql2#readme",
+  "bugs": {
+    "url": "https://github.com/singlestore-labs/node-mysql2/issues"
+  },
+  
   "dependencies": {
     "aws-ssl-profiles": "^1.1.1",
     "denque": "^2.1.0",
