@@ -295,8 +295,6 @@ export interface ConnectionOptions {
 
   connectAttributes?: { [param: string]: any };
 
-  sessionVariables?: any;
-
   isServer?: boolean;
 
   maxPreparedStatements?: number;
