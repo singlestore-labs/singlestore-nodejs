@@ -32,9 +32,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install MySQL client
+        run: sudo apt-get update && sudo apt-get install -y mysql-client
+
       - name: Wait for SingleStore
         run: |
-          until mysqladmin ping -h"127.0.0.1" -P"3306" --silent; do
+          until mysqladmin ping -h"127.0.0.1" -P"3306" -u"root" -p"${{ secrets.SINGLESTORE_PASSWORD }}" --silent; do
             echo 'waiting for singlestore...'
             sleep 1
           done
@@ -45,5 +48,5 @@ jobs:
           MYSQL_HOST: 127.0.0.1
           MYSQL_PORT: 3306
           MYSQL_USER: root
-          MYSQL_PASSWORD: ''
+          MYSQL_PASSWORD: ${{ secrets.SINGLESTORE_PASSWORD }}
           MYSQL_DATABASE: test

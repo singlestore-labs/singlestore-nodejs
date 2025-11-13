@@ -23,11 +23,12 @@ if [ -f "$SKIP_FILE" ]; then
   done < "$SKIP_FILE"
 fi
 
-# Initialize counters
+# Initialize counters and arrays
 TOTAL_TESTS=0
 PASSED_TESTS=0
 FAILED_TESTS=0
 SKIPPED_TESTS=0
+declare -a FAILED_TEST_LIST
 
 # Run tests that are not in skip list
 while IFS= read -r file; do
@@ -43,12 +44,13 @@ while IFS= read -r file; do
   
   TOTAL_TESTS=$((TOTAL_TESTS + 1))
   echo "Running: $file"
-  node run-tests-wrapper.cjs "$file"
+  node "$file"
   
   # Capture exit code
   if [ $? -ne 0 ]; then
     echo "FAILED: $file"
     FAILED_TESTS=$((FAILED_TESTS + 1))
+    FAILED_TEST_LIST+=("$file")
   else
     echo "PASSED: $file"
     PASSED_TESTS=$((PASSED_TESTS + 1))
@@ -64,4 +66,21 @@ echo "Total tests run: $TOTAL_TESTS"
 echo "Passed: $PASSED_TESTS"
 echo "Failed: $FAILED_TESTS"
 echo "Skipped: $SKIPPED_TESTS"
+
+# Print failed tests list
+if [ ${#FAILED_TEST_LIST[@]} -gt 0 ]; then
+  echo ""
+  echo "Failed Tests:"
+  echo "=========================================="
+  for failed_test in "${FAILED_TEST_LIST[@]}"; do
+    echo "$failed_test"
+  done
+  echo "=========================================="
+fi
+
 echo "=========================================="
+
+# Exit with error if any tests failed
+if [ $FAILED_TESTS -gt 0 ]; then
+  exit 1
+fi
