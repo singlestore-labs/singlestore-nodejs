@@ -14,3 +14,4 @@
 ./test/integration/connection/test-typecast.test.cjs
 ./test/integration/regressions/test-#433.test.cjs
 ./website/node_modules/css-declaration-sorter/src/core/main.test.mjs
+./test/integration/test-server-close.test.cjs
