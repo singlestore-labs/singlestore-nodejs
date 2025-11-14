@@ -113,7 +113,7 @@ function procedurise(sql) {
   return [
     'DROP PROCEDURE IF EXISTS _as_sp_call;',
     'CREATE PROCEDURE _as_sp_call() AS BEGIN',
-    `${sql} ;`,
+    `${sql};`,
     'END',
   ].join('\n');
 }

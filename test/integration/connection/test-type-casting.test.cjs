@@ -63,8 +63,8 @@ test(async () => {
         // check that the column type matches the type name stored in driver.Types
         const columnType = fieldData[test.columnName];
         let expectedType = driver.Types[columnType];
-        if(test.columnType == 'BLOB'){
-          expectedType = 'BLOB'
+        if(test.columnType === 'BLOB'){
+          expectedType = 'BLOB';
         }
         assert.equal(
           test.columnType === expectedType,

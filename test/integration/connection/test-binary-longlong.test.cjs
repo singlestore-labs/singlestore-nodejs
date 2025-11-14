@@ -4,12 +4,6 @@ const { assert } = require('poku');
 const common = require('../../common.test.cjs');
 
 const conn = common.createConnection();
-// Handle uncaught assertion errors to ensure connection closes
-process.on('uncaughtException', (err) => {
-  console.error('Uncaught exception:', err);
-  connection.end(() => process.exit(1));
-});
-
 
 conn.query(
   'CREATE TEMPORARY TABLE `tmp_longlong` ( ' +

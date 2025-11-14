@@ -56,12 +56,15 @@ const common = require('../../../common.test.cjs');
         let type = words[1];
 
         // Normalize types to match inspectResults
-        if (type === 'LONGTEXT') type = 'LONG_BLOB(4294967295)';
-        if (type === 'MEDIUMTEXT') type = 'MEDIUM_BLOB(16777215)';
-        if (type === 'TEXT') type = 'BLOB(65535)';
-        if (type === 'TINYTEXT') type = 'TINY_BLOB(255)';
+        const typeMap = {
+          'LONGTEXT': 'LONG_BLOB(4294967295)',
+          'MEDIUMTEXT': 'MEDIUM_BLOB(16777215)',
+          'TEXT': 'BLOB(65535)',
+          'TINYTEXT': 'TINY_BLOB(255)',
+        };
+        if (typeMap[type]) type = typeMap[type];
         // Rebuild the line with normalized type
-        return [name,type, ...words.slice(2)].join(' ');
+        return [name, type, ...words.slice(2)].join(' ');
       });
 
     const normalizedInspectResults = inspectResults
@@ -74,7 +77,7 @@ const common = require('../../../common.test.cjs');
     for (let l = 0; l < normalizedInspectResults.length; l++) {
       const inspectLine = normalizedInspectResults[l];
       const schemaLine = schemaArray[l];
-      
+
       assert.equal(
         inspectLine,
         schemaLine,

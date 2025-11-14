@@ -36,7 +36,6 @@ const testEncoding = function (err) {
     resultData = results;
     console.log(resultData)
   });
-  
   connection.end();
 };
 

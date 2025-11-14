@@ -36,7 +36,7 @@ This driver offers these features optimized for SingleStore:
 ## Installation
 
 ```bash
-npm install singlestore_nodejs
+npm install singlestore-nodejs
 ```
 
 ## Quick Start
@@ -193,7 +193,7 @@ const connection = singlestore.createConnection({...});
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+Contributions are welcome! Please see [Contributing.md](Contributing.md) for details.
 
 ## License
 
@@ -202,12 +202,3 @@ MIT License - see [LICENSE](LICENSE)
 ## Acknowledgments
 
 This project is a fork of [mysql2](https://github.com/sidorares/node-mysql2) by @sidorares. We are grateful for the excellent foundation provided by the MySQL2 project.
-
-[npm-image]: https://img.shields.io/npm/v/singlestore_nodejs.svg
-[npm-url]: https://npmjs.org/package/singlestore_nodejs
-[node-version-image]: https://img.shields.io/node/v/singlestore_nodejs.svg
-[node-version-url]: https://nodejs.org/en/download/
-[travis-image]: https://img.shields.io/travis/singlestore/singlestore_nodejs/master.svg?label=linux
-[travis-url]: https://travis-ci.org/singlestore/singlestore_nodejs
-[downloads-image]: https://img.shields.io/npm/dm/singlestore_nodejs.svg
-[downloads-url]: https://npmjs.org/package/singlestore_nodejs

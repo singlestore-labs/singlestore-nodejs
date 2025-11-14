@@ -1,5 +1,5 @@
 {
-  "name": "singlestore_nodejs",
+  "name": "singlestore-nodejs",
   "version": "1.0.0",
   "description": "Fast SingleStore driver for Node.js. Implements core protocol, prepared statements, SSL and compression in native JS",
   "main": "index.js",

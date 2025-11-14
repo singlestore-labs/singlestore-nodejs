@@ -37,35 +37,3 @@ Promise.all([
 ]).then(async () => {
   await connection.end();
 });
-
-// test(async () => {
-//   const connection = createConnection().promise();
-//   try {
-//     const [result] = await connection.query(
-//       `SELECT CAST('{"test": true}' AS JSON) AS json_result`
-//     );
-//     assert.deepStrictEqual(
-//       result[0].json_result,
-//       { test: true },
-//       'Ensure JSON return parsed (query)'
-//     );
-//   } finally {
-//     await connection.end();
-//   }
-// });
-
-// test(async () => {
-//   const connection = createConnection().promise();
-//   try {
-//     const [result] = await connection.execute(
-//       `SELECT CAST('{"test": true}' AS JSON) AS json_result`
-//     );
-//     assert.deepStrictEqual(
-//       result[0].json_result,
-//       { test: true },
-//       'Ensure JSON return parsed (execute)'
-//     );
-//   } finally {
-//     await connection.end();
-//   }
-// });

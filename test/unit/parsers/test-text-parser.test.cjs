@@ -3,7 +3,7 @@
 const { assert } = require('poku');
 const common = require('../../common.test.cjs');
 
-// The mysql2 driver has improved. It now correctly decodes the string 
+// The mysql2 driver has improved. It now correctly decodes the string
 // as UTF-8 by default, even when you don't explicitly pass 'utf8'
 
 const typeCastWrapper = function (...args) {

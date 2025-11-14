@@ -32,16 +32,6 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install MySQL client
-        run: sudo apt-get update && sudo apt-get install -y mysql-client
-
-      - name: Wait for SingleStore
-        run: |
-          until mysqladmin ping -h"127.0.0.1" -P"3306" -u"root" -p"${{ secrets.SINGLESTORE_PASSWORD }}" --silent; do
-            echo 'waiting for singlestore...'
-            sleep 1
-          done
-
       - name: Run all tests
         run: bash run-all-tests.sh
         env:

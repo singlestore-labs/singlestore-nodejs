@@ -5,7 +5,7 @@ const { assert } = require('poku');
 const Long = require('long');
 
 const connection = common.createConnection();
-// Made changes to Pass the test need to check if alternate or solution of this issue.
+// Made changes to pass the test. Need to verify if this is the correct solution or if an alternative approach is needed.
 connection.query(
   [
     'CREATE TEMPORARY TABLE `bigs` (',
