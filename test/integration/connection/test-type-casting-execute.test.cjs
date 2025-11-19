@@ -63,6 +63,8 @@ test(async () => {
         // check that the column type matches the type name stored in driver.Types
         const columnType = fieldData[test.columnName];
         let expectedType = driver.Types[columnType];
+
+        // TEXT types (TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT) are all reported as BLOB type.
         if(test.columnType === 'BLOB'){
           expectedType = 'BLOB';
         }
@@ -83,6 +85,7 @@ test(async () => {
         } else if (Buffer.isBuffer(expected)) {
           assert.equal(Buffer.isBuffer(got), true, test.type);
           // For BIT type, check if the returned buffer ends with the expected buffer
+          // BIT datatype with length other than 64' is not supported by SingleStore
           if (test.type.startsWith('bit')) {
             const expectedBuffer = expected;
             const gotBuffer = got;

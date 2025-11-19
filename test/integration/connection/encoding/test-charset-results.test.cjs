@@ -13,10 +13,6 @@ if (`${process.env.MYSQL_CONNECTION_URL}`.includes('pscale_pw_')) {
 const connection = common.createConnection();
 
 const payload = 'привет, мир';
-
-// Singlestore does not allow to set character_set_results variable it is read only in SingleStore. 
-// https://docs.singlestore.com/cloud/reference/sql-reference/character-encoding/specifying-character-set-and-collation-for-workspaces/
-
 function tryEncoding(encoding, cb) {
   connection.query('set character_set_results = ?', [encoding], (err) => {
     assert.ifError(err);

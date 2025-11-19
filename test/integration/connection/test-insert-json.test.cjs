@@ -32,7 +32,7 @@ connection.query('SELECT * FROM json_test;', [], (err, res) => {
 });
 
 process.on('exit', () => {
-  assert.equal(errorCodeInvalidJSON, 'ER_BINLOG_STMT_MODE_AND_NO_REPL_TABLES');
+  assert.equal(errorCodeInvalidJSON, 'ER_INVALID_JSON_EXPRESSION');
   assert.equal(errorNumInvalidJSON, 1844);
   assert.equal(result[0].data.k, 'v');
 });

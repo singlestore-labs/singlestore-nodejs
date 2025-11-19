@@ -1,17 +1,42 @@
 ## Tests to skip - add one test file path per line
 ## Lines starting with # are comments and will be ignored
+
+## SingleStore does not support setting time_zone variable 
 ./test/integration/connection/test-custom-date-parameter.test.cjs
 ./test/integration/connection/test-date-parameter.test.cjs
 ./test/integration/connection/test-datetime.test.cjs
+
+## EXPLAIN statements are not supported by SingleStore's prepared statement protocol
 ./test/integration/connection/test-execute-nocolumndef.test.cjs
+
+## SingleStore does not have Strict Date modes and performance_schema
 ./test/integration/connection/test-invalid-date-result.test.cjs
+
+## SingleStore does not fully support server-side prepared statements, 
+## especially for certain commands like SHOW STATUS.
 ./test/integration/connection/test-select-ssl.test.cjs
+
+## 'sql_mode = ALLOW_INVALID_DATES' setting is not supported in SingleStore.
 ./test/integration/connection/test-timestamp.test.cjs
+
+## This test is specific to MySql as SingleStore does not have build-in DB name mysql.
 ./test/integration/connection/test-track-state-change.test.cjs
+
+## There is difference in storing geospatial data in MySql and Singlestore.
 ./test/integration/connection/test-typecast-execute.test.cjs
 ./test/integration/connection/test-typecast-geometry-execute.test.cjs
 ./test/integration/connection/test-typecast-geometry.test.cjs
 ./test/integration/connection/test-typecast.test.cjs
+
+## SingleStore does not support non-UTF8 character encodings.
 ./test/integration/regressions/test-#433.test.cjs
+./test/integration/connection/encoding/test-client-encodings.test.cjs
+
+## This test is executed in different way -  not part of our test suite.
 ./website/node_modules/css-declaration-sorter/src/core/main.test.mjs
+
+## MySQL-specific timeout behavior - SingleStore handles wait_timeout differently
 ./test/integration/test-server-close.test.cjs
+
+## LAST_INSERT_ID() only returns automatically generated AUTO_INCREMENT values.
+./test/integration/connection/test-insert-negative-ai.test.cjs

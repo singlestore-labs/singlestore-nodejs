@@ -3,9 +3,8 @@
   "version": "1.0.0",
   "description": "Fast SingleStore driver for Node.js. Implements core protocol, prepared statements, SSL and compression in native JS",
   "main": "index.js",
-  "directories": {
-    "examples": "examples"
-  },
+  "typings": "typings/mysql/index",
+  "type": "commonjs",
   "scripts": {
     "lint": "eslint . && prettier --check .",
     "lint:fix": "eslint . --fix && prettier --write .",
@@ -19,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/singlestore-labs/node-mysql2"
+    "url": "https://github.com/singlestore-labs/singlestore-nodejs"
   },
   "keywords": [
     "singlestore",
@@ -41,7 +40,7 @@
   ],
   "files": [
     "lib",
-    "typings",
+    "typings/mysql",
     "index.js",
     "index.d.ts",
     "promise.js",
@@ -58,9 +57,9 @@
   },
   "author": "",
   "license": "MIT",
-  "homepage": "https://github.com/singlestore-labs/node-mysql2#readme",
+  "homepage": "https://github.com/singlestore-labs/singlestore-nodejs#readme",
   "bugs": {
-    "url": "https://github.com/singlestore-labs/node-mysql2/issues"
+    "url": "https://github.com/singlestore-labs/singlestore-nodejs/issues"
   },
   
   "dependencies": {

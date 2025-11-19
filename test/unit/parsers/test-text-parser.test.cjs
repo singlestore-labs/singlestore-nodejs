@@ -20,7 +20,6 @@ const connection = common.createConnection();
 connection.query('CREATE TEMPORARY TABLE t (i JSON)');
 connection.query('INSERT INTO t values(\'{ "test": "😀" }\')');
 
-
 // JSON without encoding options - should result in unexpected behaviors
 connection.query(
   {
