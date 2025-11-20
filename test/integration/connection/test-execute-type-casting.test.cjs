@@ -67,6 +67,15 @@ test(async () => {
           got = String(got);
         } else if (Buffer.isBuffer(expected)) {
           assert.equal(Buffer.isBuffer(got), true, test.type);
+          // For BIT type, check if the returned buffer ends with the expected buffer
+          // BIT datatype with length other than 64' is not supported by SingleStore.
+          if (test.type.startsWith('bit')) {
+            const expectedBuffer = expected;
+            const gotBuffer = got;
+            const slicedGot = gotBuffer.slice(gotBuffer.length - expectedBuffer.length);
+            assert.deepEqual(slicedGot, expectedBuffer, `Buffer for ${test.type} does not match`);
+            return; // Skip the generic buffer string comparison
+          }
 
           expected = String(Array.prototype.slice.call(expected));
           got = String(Array.prototype.slice.call(got));

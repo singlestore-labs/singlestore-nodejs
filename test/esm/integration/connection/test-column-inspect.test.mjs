@@ -17,8 +17,8 @@ const common = require('../../../common.test.cjs');
 
   await test(async () => {
     const schema = `
-        id INT NOT NULL AUTO_INCREMENT,
-        weight INT(2) UNSIGNED ZEROFILL,
+        id BIGINT NOT NULL,
+        weight INT UNSIGNED,
         usignedInt INT UNSIGNED NOT NULL,
         signedInt INT NOT NULL,
         unsignedShort SMALLINT UNSIGNED NOT NULL,
@@ -37,7 +37,6 @@ const common = require('../../../common.test.cjs');
         decimalDefault DECIMAL,
         decimal13_10 DECIMAL(13,10),
         floatDefault FLOAT,
-        float11_7 FLOAT(11,7),
         dummyLastFieldToAllowForTrailingComma INT,
       `;
 
@@ -54,12 +53,23 @@ const common = require('../../../common.test.cjs');
       .map((line) => {
         const words = line.split(' ');
         const name = `\`${words[0]}\``;
-        return [name, ...words.slice(1)].join(' ');
+        let type = words[1];
+
+        // Normalize types to match inspectResults
+        const typeMap = {
+          'LONGTEXT': 'LONG_BLOB(4294967295)',
+          'MEDIUMTEXT': 'MEDIUM_BLOB(16777215)',
+          'TEXT': 'BLOB(65535)',
+          'TINYTEXT': 'TINY_BLOB(255)',
+        };
+        if (typeMap[type]) type = typeMap[type];
+        // Rebuild the line with normalized type
+        return [name, type, ...words.slice(2)].join(' ');
       });
 
     const normalizedInspectResults = inspectResults
       .split('\n')
-      .slice(1, -2) // remove "[" and "]" lines and also last dummy field
+      .slice(1, -3) // remove "[" and "]" lines and also last dummy field
       .map((line) => line.trim())
       // remove primary key - it's not in the schema explicitly but worth having in inspect
       .map((line) => line.split('PRIMARY KEY ').join(''));

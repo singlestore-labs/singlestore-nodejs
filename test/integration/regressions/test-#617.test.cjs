@@ -27,7 +27,7 @@ const expected = [
   },
   {
     id: 2,
-    date: '2017-07-26 09:36:42.123',
+    date: '2017-07-26 09:36:42.123000',
     name: 'Jane',
   },
 ];
@@ -36,7 +36,7 @@ let actualRows = null;
 
 function executeTest(err) {
   assert.ifError(err);
-  connection.execute(`SELECT * FROM \`${tableName}\``, (err, rows) => {
+  connection.execute(`SELECT * FROM \`${tableName}\` order by id`, (err, rows) => {
     assert.ifError(err);
     actualRows = rows;
     connection.end();
@@ -47,9 +47,9 @@ connection.query(
   [
     `CREATE TEMPORARY TABLE \`${tableName}\` (`,
     ` \`${testFields[0]}\` int,`,
-    ` \`${testFields[1]}\` TIMESTAMP(3),`,
+    ` \`${testFields[1]}\` TIMESTAMP(6),`,
     ` \`${testFields[2]}\` varchar(10)`,
-    ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+    ')',
   ].join(' '),
   (err) => {
     assert.ifError(err);

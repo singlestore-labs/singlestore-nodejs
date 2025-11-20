@@ -54,7 +54,7 @@ const common = require('../../../common.test.cjs');
         '`title` varchar(255) DEFAULT NULL,',
         '`text` varchar(255) DEFAULT NULL,',
         'PRIMARY KEY (`id`)',
-        ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+        ')',
       ].join('\n')
     );
 
@@ -67,7 +67,7 @@ const common = require('../../../common.test.cjs');
       'проводить собрания, митинги и демонстрации, шествия и пикетирование',
     ]);
 
-    const [_rows] = await connection.execute('SELECT * FROM announcements');
+    const [_rows] = await connection.execute('SELECT * FROM announcements order by id');
 
     assert.equal(_rows.length, 2, 'rows length needs to be 2');
     assert.equal(

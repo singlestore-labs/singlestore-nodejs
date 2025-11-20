@@ -16,23 +16,23 @@ const connection = createConnection({
 Promise.all([
   test(async () => {
     const [result] = await connection.query(
-      `SELECT CAST('{"test": true}' AS JSON) AS json_result`
+      `SELECT '{"test": true}' :> JSON AS json_result`
     );
 
     assert.deepStrictEqual(
       result[0].json_result,
-      '{"test": true}',
+      '{"test":true}',
       'Ensure JSON return as string (query)'
     );
   }),
   test(async () => {
     const [result] = await connection.execute(
-      `SELECT CAST('{"test": true}' AS JSON) AS json_result`
+      `SELECT '{"test": true}' :> JSON AS json_result`
     );
 
     assert.deepStrictEqual(
       result[0].json_result,
-      '{"test": true}',
+      '{"test":true}',
       'Ensure JSON return as string (execute)'
     );
   }),

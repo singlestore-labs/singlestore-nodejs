@@ -94,8 +94,14 @@ test(async () => {
   });
 
   const connection = common.createConnection({
-    database: 'mysql',
+    database: 'test',
   });
+
+  await connection
+    .promise()
+    .query(
+      "CREATE TABLE IF NOT EXISTS user (User VARCHAR(255), Host VARCHAR(255))"
+    );
 
   const mySqlVersion = await common.getMysqlVersion(connection);
 

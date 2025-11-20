@@ -14,7 +14,7 @@ const connection = createConnection().promise();
 Promise.all([
   test(async () => {
     const [result] = await connection.query(
-      `SELECT CAST('{"test": true}' AS JSON) AS json_result`
+      `SELECT '{"test": true}' :> JSON AS json_result`
     );
 
     assert.deepStrictEqual(
@@ -25,7 +25,7 @@ Promise.all([
   }),
   test(async () => {
     const [result] = await connection.execute(
-      `SELECT CAST('{"test": true}' AS JSON) AS json_result`
+      `SELECT '{"test": true}' :> JSON AS json_result`
     );
 
     assert.deepStrictEqual(

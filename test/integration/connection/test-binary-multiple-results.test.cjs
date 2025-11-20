@@ -39,7 +39,7 @@ const rs1 = {
 const rs2 = clone(rs1);
 rs2.serverStatus = 2;
 const rs3 = clone(rs1);
-rs3.serverStatus = 34;
+rs3.serverStatus = 2;
 
 const select1 = [{ 1: '1' }];
 const select2 = [{ 2: '2' }];
@@ -83,7 +83,7 @@ const fields2 = clone(fields1);
 fields2[0].name = '2';
 
 const tests = [
-  ['select * from some_rows', [[select3, rs3], [sr_fields, undefined], 2]], //  select 3 rows
+  ['ECHO select * from some_rows order by test', [[select3, rs3], [sr_fields, undefined], 2]], //  select 3 rows
   [
     'SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT; SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS',
     [rs2, undefined, 1],
@@ -91,20 +91,20 @@ const tests = [
   ['set @a = 1', [rs2, undefined, 1]],
   ['set @a = 1; set @b = 2', [rs2, undefined, 1]],
   [
-    'select 1; select 2',
+    'ECHO select 1; ECHO select 2',
     [[select1, select2, rs2], [fields1, fields2, undefined], 3],
   ],
-  ['set @a = 1; select 1', [[select1, rs2], [fields1, undefined], 2]],
-  ['select 1; set @a = 1', [[select1, rs2], [fields1, undefined], 2]],
-  ['select * from no_rows', [[[], rs3], [nr_fields, undefined], 2]], // select 0 rows"
-  ['set @a = 1; select * from no_rows', [[[], rs3], [nr_fields, undefined], 2]], // insert + select 0 rows
-  ['select * from no_rows; set @a = 1', [[[], rs3], [nr_fields, undefined], 2]], //  select 0 rows + insert
+  ['set @a = 1; ECHO select 1', [[select1, rs2], [fields1, undefined], 2]],
+  ['ECHO select 1; set @a = 1', [[select1, rs2], [fields1, undefined], 2]],
+  ['ECHO select * from no_rows', [[[], rs3], [nr_fields, undefined], 2]], // select 0 rows"
+  ['set @a = 1; ECHO select * from no_rows', [[[], rs3], [nr_fields, undefined], 2]], // insert + select 0 rows
+  ['ECHO select * from no_rows; set @a = 1', [[[], rs3], [nr_fields, undefined], 2]], //  select 0 rows + insert
   [
-    'set @a = 1; select * from some_rows',
+    'set @a = 1; ECHO select * from some_rows order by test',
     [[select3, rs3], [sr_fields, undefined], 2],
   ], // insert + select 3 rows
   [
-    'select * from some_rows; set @a = 1',
+    'ECHO select * from some_rows order by test; set @a = 1',
     [[select3, rs3], [sr_fields, undefined], 2],
   ], //  select 3 rows + insert
 ];
@@ -112,8 +112,7 @@ const tests = [
 function procedurise(sql) {
   return [
     'DROP PROCEDURE IF EXISTS _as_sp_call;',
-    'CREATE PROCEDURE _as_sp_call()',
-    'BEGIN',
+    'CREATE PROCEDURE _as_sp_call() AS BEGIN',
     `${sql};`,
     'END',
   ].join('\n');

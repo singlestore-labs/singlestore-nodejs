@@ -16,7 +16,7 @@ connection.execute(
     '`date` DATETIME NULL,',
     '`number` INT NULL,',
     'PRIMARY KEY (`id`)',
-    ') ENGINE=InnoDB DEFAULT CHARSET=utf8',
+    ')',
   ].join('\n'),
   (err) => {
     if (err) throw err;

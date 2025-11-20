@@ -48,7 +48,7 @@ Promise.all([
     );
   }),
   test(async () => {
-    const [result] = await connection.execute('SET @1 = 1;');
+    const [result] = await connection.execute('SET @a = 1;');
 
     assert.strictEqual(
       result.constructor.name,

@@ -67,7 +67,7 @@ conn.connect((err) => {
     started++;
     conn.query(
       {
-        sql: 'SELECT * from tmp_longlong',
+        sql: 'SELECT * from tmp_longlong order by id',
         supportBigNumbers: supportBigNumbers,
         bigNumberStrings: bigNumberStrings,
       },
@@ -86,7 +86,7 @@ conn.connect((err) => {
     started++;
     conn.execute(
       {
-        sql: 'SELECT * from tmp_longlong',
+        sql: 'SELECT * from tmp_longlong order by id',
         supportBigNumbers: supportBigNumbers,
         bigNumberStrings: bigNumberStrings,
       },

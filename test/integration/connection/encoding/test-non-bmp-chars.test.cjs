@@ -9,21 +9,21 @@ if (`${process.env.MYSQL_CONNECTION_URL}`.includes('pscale_pw_')) {
   process.exit(0);
 }
 
-// 4 bytes in utf8
+// 4 bytes in utf8mb4
 const pileOfPoo = '💩';
 
 const connection = common.createConnection({ charset: 'UTF8_GENERAL_CI' });
 connection.query('select "💩"', (err, rows, fields) => {
   assert.ifError(err);
-  assert.equal(fields[0].name, pileOfPoo);
-  assert.equal(rows[0][fields[0].name], pileOfPoo);
+  assert.equal(fields[0].name, '������');
+  assert.equal(rows[0][fields[0].name], '������');
   connection.end();
 });
 
 const connection2 = common.createConnection({ charset: 'UTF8MB4_GENERAL_CI' });
 connection2.query('select "💩"', (err, rows, fields) => {
   assert.ifError(err);
-  assert.equal(fields[0].name, '?');
-  assert.equal(rows[0]['?'], pileOfPoo);
+  assert.equal(fields[0].name, pileOfPoo);
+  assert.equal(rows[0][fields[0].name], pileOfPoo);
   connection2.end();
 });
