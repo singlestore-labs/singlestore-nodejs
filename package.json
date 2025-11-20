@@ -55,7 +55,6 @@
   "engines": {
     "node": ">= 8.0"
   },
-  "author": "",
   "license": "MIT",
   "homepage": "https://github.com/singlestore-labs/singlestore-nodejs#readme",
   "bugs": {

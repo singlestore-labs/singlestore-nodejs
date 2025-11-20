@@ -8,7 +8,6 @@ const connection = common.createConnection({
   bigNumberStrings: true,
 });
 
-// Create table without AUTO_INCREMENT
 connection.query(
   [
     'CREATE TEMPORARY TABLE `bigs` (',

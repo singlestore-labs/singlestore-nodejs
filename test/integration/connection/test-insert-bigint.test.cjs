@@ -6,7 +6,6 @@ const Long = require('long');
 
 const connection = common.createConnection();
 
-// Create table without AUTO_INCREMENT
 connection.query(
   [
     'CREATE TEMPORARY TABLE `bigs` (',
@@ -49,17 +48,17 @@ connection.query("INSERT INTO bigs SET title='test1', id=123", (err) => {
                   {
                     sql: 'SELECT * FROM bigs ORDER BY id',
                     supportBigNumbers: true,
-                    bigNumberStrings: true,  // Changed to true to get strings
+                    bigNumberStrings: false,
                   },
                   (err, result) => {
                     if (err) throw err;
                     
-                    // Verify the data matches expected types and values (all as strings)
-                    assert.strictEqual(result[0].id, '123');
-                    assert.strictEqual(result[1].id, '124');
-                    assert.strictEqual(result[2].id, '123456789');
-                    assert.strictEqual(result[3].id, '123456790');
-                    assert.strictEqual(result[4].id, '9007199254740992');
+                    // Verify the data matches expected types and values
+                    assert.strictEqual(result[0].id, 123);
+                    assert.strictEqual(result[1].id, 124);
+                    assert.strictEqual(result[2].id, 123456789);
+                    assert.strictEqual(result[3].id, 123456790);
+                    assert.strictEqual(result[4].id, 9007199254740992);
                     assert.strictEqual(result[5].id, '9007199254740993');
                     assert.strictEqual(result[6].id, '90071992547409924');
                     assert.strictEqual(result[7].id, '90071992547409925');
