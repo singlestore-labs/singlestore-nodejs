@@ -7,6 +7,7 @@ const driver = require('../../../index.js');
 const configURI = `mysql://${common.config.user}:${common.config.password}@${common.config.host}:${common.config.port}/${common.config.database}`;
 const connectionConfig = {
   uri: configURI,
+  // debug: true,
   sessionVariables: {
     sql_select_limit: 100,
     sql_mode: 'STRICT_ALL_TABLES',
@@ -15,37 +16,25 @@ const connectionConfig = {
 };
 
 function checkSessionVars(conn) {
-  const runQuery = () => {
-    conn.query(
-      'SELECT @@sql_select_limit, @@sql_mode, @@autocommit',
-      (err, rows, fields) => {
-        if (err) {
-          throw err;
-        }
-        assert.deepEqual(rows, [
-          {
-            '@@sql_select_limit': 100,
-            '@@sql_mode': 'STRICT_ALL_TABLES',
-            '@@autocommit': 0,
-          },
-        ]);
-        assert.equal(fields[0].name, '@@sql_select_limit');
-        assert.equal(fields[1].name, '@@sql_mode');
-        assert.equal(fields[2].name, '@@autocommit');
-        conn.end();
+  conn.query(
+    'SELECT @@sql_select_limit, @@sql_mode, @@autocommit',
+    (err, rows, fields) => {
+      if (err) {
+        throw err;
       }
-    );
-  };
-
-  if (conn.threadId) {
-    // Connection is already established
-    runQuery();
-  } else {
-    // Wait for connection to be established
-    conn.on('connect', () => {
-      runQuery();
-    });
-  }
+      assert.deepEqual(rows, [
+        {
+          '@@sql_select_limit': 100,
+          '@@sql_mode': 'STRICT_ALL_TABLES',
+          '@@autocommit': 0,
+        },
+      ]);
+      assert.equal(fields[0].name, '@@sql_select_limit');
+      assert.equal(fields[1].name, '@@sql_mode');
+      assert.equal(fields[2].name, '@@autocommit');
+      conn.end();
+    }
+  );
 }
 
 const connection = driver.createConnection(connectionConfig);
