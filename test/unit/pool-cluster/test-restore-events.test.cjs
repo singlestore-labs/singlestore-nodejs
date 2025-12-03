@@ -36,7 +36,7 @@ const server = mysql.createServer();
 console.log('test pool cluster restore events');
 
 portfinder.getPort((err, port) => {
-  cluster.add('MASTER', { port });
+  cluster.add('MASTER', { port, sessionVariables: null });
 
   server.listen(port + 0, (err) => {
     assert.ifError(err);
