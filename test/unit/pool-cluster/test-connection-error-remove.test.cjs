@@ -23,6 +23,7 @@ if (process.platform === 'win32') {
 
 const cluster = common.createPoolCluster({
   removeNodeErrorCount: 1,
+  sessionVariables: null,
 });
 
 let connCount = 0;

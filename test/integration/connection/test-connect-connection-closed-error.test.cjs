@@ -23,6 +23,7 @@ portfinder.getPort((err, port) => {
     user: 'testuser',
     database: 'testdatabase',
     password: 'testpassword',
+    sessionVariables: null,
   });
 
   connection.query('select 1', (err) => {

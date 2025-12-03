@@ -7,7 +7,6 @@ const driver = require('../../../index.js');
 const configURI = `mysql://${common.config.user}:${common.config.password}@${common.config.host}:${common.config.port}/${common.config.database}`;
 const connectionConfig = {
   uri: configURI,
-  // debug: true,
   sessionVariables: {
     sql_select_limit: 100,
     sql_mode: 'STRICT_ALL_TABLES',
