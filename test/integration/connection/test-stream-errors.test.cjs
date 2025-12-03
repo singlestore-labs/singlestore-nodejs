@@ -31,6 +31,7 @@ const server = common.createServer(
       host: 'localhost',
       port: server._port,
       ssl: false,
+      sessionVariables: null,
     });
     clientConnection.query(query, (err) => {
       if (err && err.code === 'HANDSHAKE_NO_SSL_SUPPORT') {

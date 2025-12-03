@@ -61,6 +61,7 @@ portfinder.getPort((_, port) => {
   server.listen(port);
   const conn = mysql.createConnection({
     port: port,
+    sessionVariables: null,
   });
 
   conn.on('error', (err) => {
