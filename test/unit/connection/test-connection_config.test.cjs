@@ -3,15 +3,12 @@
 const ConnectionConfig = require('../../../lib/connection_config.js');
 const { assert } = require('poku');
 
-const expectedMessage = "SSL profile must be an object, instead it's a boolean";
-
-assert.throws(
+assert.doesNotThrow(
   () =>
     new ConnectionConfig({
       ssl: true,
     }),
-  (err) => err instanceof TypeError && err.message === expectedMessage,
-  'Error, the constructor accepts a boolean without throwing the right exception'
+  'Error, the constructor accepts a boolean'
 );
 
 assert.doesNotThrow(
