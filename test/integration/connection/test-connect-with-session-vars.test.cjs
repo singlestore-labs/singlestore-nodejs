@@ -36,8 +36,25 @@ function checkSessionVars(conn) {
   );
 }
 
-const connection = driver.createConnection(connectionConfig);
-const pool = driver.createPool(connectionConfig);
+const connectionDefault = driver.createConnection({ uri: configURI });
+connectionDefault.query(
+  'SELECT @@vector_type_project_format',
+  (err, rows, fields) => {
+    if (err) {
+      throw err;
+    }
+    assert.deepEqual(rows, [
+      {
+        '@@vector_type_project_format': 'JSON',
+      },
+    ]);
+    assert.equal(fields[0].name, '@@vector_type_project_format');
+  }
+);
+connectionDefault.end();
 
+const connection = driver.createConnection(connectionConfig);
 checkSessionVars(connection);
+
+const pool = driver.createPool(connectionConfig);
 checkSessionVars(pool);
