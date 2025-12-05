@@ -26,8 +26,8 @@ const server = mysql.createServer();
 console.log('test pool cluster remove by name');
 
 portfinder.getPort((err, port) => {
-  cluster.add('SLAVE1', { port });
-  cluster.add('SLAVE2', { port });
+  cluster.add('SLAVE1', { port: port + 0, sessionVariables: null });
+  cluster.add('SLAVE2', { port: port + 0, sessionVariables: null });
 
   server.listen(port + 0, (err) => {
     assert.ifError(err);

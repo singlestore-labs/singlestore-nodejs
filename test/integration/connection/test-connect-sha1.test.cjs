@@ -49,6 +49,7 @@ portfinder.getPort((err, port) => {
 
   const connection = mysql.createConnection({
     port: port,
+    sessionVariables: null,
     user: 'testuser',
     database: 'testdatabase',
     passwordSha1: Buffer.from(
