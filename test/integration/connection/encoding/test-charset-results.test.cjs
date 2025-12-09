@@ -18,14 +18,8 @@ function tryEncoding(encoding, cb) {
     assert.ifError(err);
     connection.query('SELECT ?', [payload], (err, rows, fields) => {
       assert.ifError(err);
-      let iconvEncoding = encoding;
-      if (encoding === 'utf8mb4') {
-        iconvEncoding = 'utf8';
-      }
-      assert.equal(
-        mysql.CharsetToEncoding[fields[0].characterSet],
-        'utf8'
-      );
+
+      assert.equal(mysql.CharsetToEncoding[fields[0].characterSet], 'utf8');
       assert.equal(fields[0].name, payload);
       assert.equal(rows[0][fields[0].name], payload);
       cb();
@@ -38,14 +32,8 @@ function tryEncodingExecute(encoding, cb) {
     assert.ifError(err);
     connection.execute('SELECT ? as n', [payload], (err, rows, fields) => {
       assert.ifError(err);
-      let iconvEncoding = encoding;
-      if (encoding === 'utf8mb4') {
-        iconvEncoding = 'utf8';
-      }
-      assert.equal(
-        mysql.CharsetToEncoding[fields[0].characterSet],
-        'utf8'
-      );
+
+      assert.equal(mysql.CharsetToEncoding[fields[0].characterSet], 'utf8');
       // TODO: figure out correct metadata encodings setup for binary protocol
       //  assert.equal(fields[0].name, payload);
       assert.equal(rows[0][fields[0].name], payload);

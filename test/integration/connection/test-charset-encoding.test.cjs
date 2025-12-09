@@ -30,10 +30,13 @@ const testEncoding = function (err) {
     );
   });
 
-  connection.query('SELECT * from `test-charset-encoding` ORDER BY id', (err, results) => {
-    assert.ifError(err);
-    resultData = results;
-  });
+  connection.query(
+    'SELECT * from `test-charset-encoding` ORDER BY id',
+    (err, results) => {
+      assert.ifError(err);
+      resultData = results;
+    }
+  );
   connection.end();
 };
 

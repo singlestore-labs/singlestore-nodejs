@@ -60,7 +60,6 @@
   "bugs": {
     "url": "https://github.com/singlestore-labs/singlestore-nodejs/issues"
   },
-  
   "dependencies": {
     "aws-ssl-profiles": "^1.1.1",
     "denque": "^2.1.0",

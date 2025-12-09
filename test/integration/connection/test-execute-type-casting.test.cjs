@@ -72,8 +72,14 @@ test(async () => {
           if (test.type.startsWith('bit')) {
             const expectedBuffer = expected;
             const gotBuffer = got;
-            const slicedGot = gotBuffer.slice(gotBuffer.length - expectedBuffer.length);
-            assert.deepEqual(slicedGot, expectedBuffer, `Buffer for ${test.type} does not match`);
+            const slicedGot = gotBuffer.slice(
+              gotBuffer.length - expectedBuffer.length
+            );
+            assert.deepEqual(
+              slicedGot,
+              expectedBuffer,
+              `Buffer for ${test.type} does not match`
+            );
             return; // Skip the generic buffer string comparison
           }
 
