@@ -1,11 +1,38 @@
 # API and Configuration
 
 [node-mysql]: https://github.com/mysqljs/mysql
+[node-mysql2]: https://github.com/sidorares/node-mysql2
+[singlestore-docs]: https://docs.singlestore.com/
 
-MySQL2 is mostly API compatible with [Node MySQL][node-mysql].
+SingleStore Node.js Driver is mostly API compatible with [node-mysql2][node-mysql2] and [Node MySQL][node-mysql]. Since SingleStore is MySQL wire-protocol compatible, most existing MySQL client code works seamlessly.
+
+
+## Known Incompatibilities
 
 One known incompatibility is that `DECIMAL` values are returned as strings whereas in [Node MySQL][node-mysql] they are returned as numbers. This includes the result of `SUM()` and `AVG()` functions when applied to `INTEGER` arguments. This is done deliberately to avoid loss of precision - see https://github.com/sidorares/node-mysql2/issues/935.
 
+## Migration from MySQL2
+
+SingleStore Node.js Driver is API-compatible with MySQL2, so migration is straightforward:
+
+```javascript
+// Before (MySQL2)
+const mysql = require('mysql2');
+const connection = mysql.createConnection({...});
+
+// After (SingleStore Node.js Driver)
+const singlestore = require('singlestore_nodejs');
+const connection = singlestore.createConnection({...});
+
+// All existing queries work as-is!
+```
+
 :::info
-If you find any other incompatibility with [Node MySQL][node-mysql], Please report via Issue tracker. We will fix reported incompatibility on priority basis.
+If you find any incompatibility with [node-mysql2][node-mysql2] or issues specific to SingleStoreDB, please report via GitHub issue. We will address reported issues on priority basis.
 :::
+
+## Additional Resources
+
+- [SingleStoreDB Documentation][singlestore-docs]
+- [Connection Options](/docs/documentation/connection-options)
+- [SingleStore-Specific Features](/docs/documentation/singlestore-features)
