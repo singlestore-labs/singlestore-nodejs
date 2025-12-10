@@ -1,14 +1,13 @@
 'use strict';
 
 const { Buffer } = require('node:buffer');
-const common = require('../../common.test.cjs');
 
-module.exports = async function (connection) {
-  const mySQLVersion = await common.getMysqlVersion(connection);
+module.exports = async function () {
+  // const mySQLVersion = await common.getMysqlVersion(connection);
 
   // mysql8 renamed some standard functions
   // see https://dev.mysql.com/doc/refman/8.0/en/gis-wkb-functions.html
-  const stPrefix = mySQLVersion.major >= 8 ? 'ST_' : '';
+  // const stPrefix = mySQLVersion.major >= 8 ? 'ST_' : '';
 
   return [
     { type: 'decimal(4,3)', insert: '1.234', columnType: 'NEWDECIMAL' },

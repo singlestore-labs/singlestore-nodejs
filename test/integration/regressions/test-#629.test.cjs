@@ -34,11 +34,14 @@ let actualRows = null;
 
 function executeTest(err) {
   assert.ifError(err);
-  connection.execute(`SELECT * FROM \`${tableName}\` order by id`, (err, rows) => {
-    assert.ifError(err);
-    actualRows = rows;
-    connection.end();
-  });
+  connection.execute(
+    `SELECT * FROM \`${tableName}\` order by id`,
+    (err, rows) => {
+      assert.ifError(err);
+      actualRows = rows;
+      connection.end();
+    }
+  );
 }
 
 connection.query(

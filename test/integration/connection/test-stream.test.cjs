@@ -49,31 +49,42 @@ connection.execute(
     }
   }
 );
-connection.execute('SELECT * FROM announcements order by id', async (err, _rows) => {
-  rows = _rows;
-  const s1 = connection.query('SELECT * FROM announcements order by id').stream();
-  s1.on('data', (row) => {
-    rows1.push(row);
-  });
-  s1.on('end', () => {
-    const s2 = connection.execute('SELECT * FROM announcements order by id').stream();
-    s2.on('data', (row) => {
-      rows2.push(row);
+connection.execute(
+  'SELECT * FROM announcements order by id',
+  async (err, _rows) => {
+    rows = _rows;
+    const s1 = connection
+      .query('SELECT * FROM announcements order by id')
+      .stream();
+    s1.on('data', (row) => {
+      rows1.push(row);
     });
-    s2.on('end', () => {
-      connection.end();
+    s1.on('end', () => {
+      const s2 = connection
+        .execute('SELECT * FROM announcements order by id')
+        .stream();
+      s2.on('data', (row) => {
+        rows2.push(row);
+      });
+      s2.on('end', () => {
+        connection.end();
+      });
     });
-  });
-  const s3 = connection.query('SELECT * FROM announcements order by id').stream();
-  for await (const row of s3) {
-    rows3.push(row);
+    const s3 = connection
+      .query('SELECT * FROM announcements order by id')
+      .stream();
+    for await (const row of s3) {
+      rows3.push(row);
+    }
+    const s4 = connection
+      .query('SELECT * FROM announcements order by id')
+      .stream();
+    for await (const row of s4) {
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      rows4.push(row);
+    }
   }
-  const s4 = connection.query('SELECT * FROM announcements order by id').stream();
-  for await (const row of s4) {
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    rows4.push(row);
-  }
-});
+);
 
 process.on('exit', () => {
   assert.deepEqual(rows.length, 2);

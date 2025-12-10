@@ -17,11 +17,14 @@ let actualRows = null;
 
 function executeTest(err) {
   assert.ifError(err);
-  connection.query(`SELECT * FROM \`${tableName}\` order by \`${testFields[3]}\``, (err, rows) => {
-    assert.ifError(err);
-    actualRows = rows;
-    connection.end();
-  });
+  connection.query(
+    `SELECT * FROM \`${tableName}\` order by \`${testFields[3]}\``,
+    (err, rows) => {
+      assert.ifError(err);
+      actualRows = rows;
+      connection.end();
+    }
+  );
 }
 
 connection.query(

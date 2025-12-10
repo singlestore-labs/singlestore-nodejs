@@ -57,10 +57,10 @@ const common = require('../../../common.test.cjs');
 
         // Normalize types to match inspectResults
         const typeMap = {
-          'LONGTEXT': 'LONG_BLOB(4294967295)',
-          'MEDIUMTEXT': 'MEDIUM_BLOB(16777215)',
-          'TEXT': 'BLOB(65535)',
-          'TINYTEXT': 'TINY_BLOB(255)',
+          LONGTEXT: 'LONG_BLOB(4294967295)',
+          MEDIUMTEXT: 'MEDIUM_BLOB(16777215)',
+          TEXT: 'BLOB(65535)',
+          TINYTEXT: 'TINY_BLOB(255)',
         };
         if (typeMap[type]) type = typeMap[type];
         // Rebuild the line with normalized type

@@ -83,7 +83,10 @@ const fields2 = clone(fields1);
 fields2[0].name = '2';
 
 const tests = [
-  ['ECHO select * from some_rows order by test', [[select3, rs3], [sr_fields, undefined], 2]], //  select 3 rows
+  [
+    'ECHO select * from some_rows order by test',
+    [[select3, rs3], [sr_fields, undefined], 2],
+  ], //  select 3 rows
   [
     'SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT; SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS',
     [rs2, undefined, 1],
@@ -97,8 +100,14 @@ const tests = [
   ['set @a = 1; ECHO select 1', [[select1, rs2], [fields1, undefined], 2]],
   ['ECHO select 1; set @a = 1', [[select1, rs2], [fields1, undefined], 2]],
   ['ECHO select * from no_rows', [[[], rs3], [nr_fields, undefined], 2]], // select 0 rows"
-  ['set @a = 1; ECHO select * from no_rows', [[[], rs3], [nr_fields, undefined], 2]], // insert + select 0 rows
-  ['ECHO select * from no_rows; set @a = 1', [[[], rs3], [nr_fields, undefined], 2]], //  select 0 rows + insert
+  [
+    'set @a = 1; ECHO select * from no_rows',
+    [[[], rs3], [nr_fields, undefined], 2],
+  ], // insert + select 0 rows
+  [
+    'ECHO select * from no_rows; set @a = 1',
+    [[[], rs3], [nr_fields, undefined], 2],
+  ], //  select 0 rows + insert
   [
     'set @a = 1; ECHO select * from some_rows order by test',
     [[select3, rs3], [sr_fields, undefined], 2],

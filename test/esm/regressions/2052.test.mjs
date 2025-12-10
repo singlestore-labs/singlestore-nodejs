@@ -100,7 +100,7 @@ test(async () => {
   await connection
     .promise()
     .query(
-      "CREATE TABLE IF NOT EXISTS user (User VARCHAR(255), Host VARCHAR(255))"
+      'CREATE TABLE IF NOT EXISTS user (User VARCHAR(255), Host VARCHAR(255))'
     );
 
   const mySqlVersion = await common.getMysqlVersion(connection);

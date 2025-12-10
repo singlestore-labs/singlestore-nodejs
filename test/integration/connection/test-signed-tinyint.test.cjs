@@ -14,13 +14,17 @@ connection.query(
 connection.query('INSERT INTO signed_ints values (-3, -120, 500)');
 connection.query('INSERT INTO signed_ints values (3,  -110, -500)');
 
-connection.execute('SELECT * from signed_ints order by b11', [5], (err, _rows) => {
-  if (err) {
-    throw err;
+connection.execute(
+  'SELECT * from signed_ints order by b11',
+  [5],
+  (err, _rows) => {
+    if (err) {
+      throw err;
+    }
+    rows = _rows;
+    connection.end();
   }
-  rows = _rows;
-  connection.end();
-});
+);
 
 process.on('exit', () => {
   assert.deepEqual(rows, [

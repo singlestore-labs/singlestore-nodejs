@@ -65,14 +65,10 @@ test(async () => {
         let expectedType = driver.Types[columnType];
 
         // TEXT types (TINYTEXT, TEXT, MEDIUMTEXT, LONGTEXT) are all reported as BLOB type.
-        if(test.columnType === 'BLOB'){
+        if (test.columnType === 'BLOB') {
           expectedType = 'BLOB';
         }
-        assert.equal(
-          test.columnType === expectedType,
-          true,
-          test.columnName
-        );
+        assert.equal(test.columnType === expectedType, true, test.columnName);
         let expected = test.expect || test.insert;
         let got = row[test.columnName];
         let message;
@@ -89,8 +85,14 @@ test(async () => {
           if (test.type.startsWith('bit')) {
             const expectedBuffer = expected;
             const gotBuffer = got;
-            const slicedGot = gotBuffer.slice(gotBuffer.length - expectedBuffer.length);
-            assert.deepEqual(slicedGot, expectedBuffer, `Buffer for ${test.type} does not match`);
+            const slicedGot = gotBuffer.slice(
+              gotBuffer.length - expectedBuffer.length
+            );
+            assert.deepEqual(
+              slicedGot,
+              expectedBuffer,
+              `Buffer for ${test.type} does not match`
+            );
             return; // Skip the generic buffer string comparison
           }
           expected = String(Array.prototype.slice.call(expected));
