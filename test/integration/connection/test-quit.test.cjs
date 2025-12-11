@@ -29,6 +29,7 @@ const server = common.createServer(
       host: 'localhost',
       port: server._port,
       ssl: false,
+      sessionVariables: null,
     });
 
     connection.query(queryCli, (err, _rows, _fields) => {

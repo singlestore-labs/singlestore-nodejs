@@ -115,6 +115,7 @@ portfinder.getPort((err, port) => {
     port: port,
     authSwitchHandler: makeSwitchHandler(),
     connectAttributes: connectAttributes,
+    sessionVariables: null,
   });
 
   conn.on('connect', (data) => {

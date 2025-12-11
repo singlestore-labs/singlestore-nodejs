@@ -28,6 +28,7 @@ const server = common.createServer(
       host: 'localhost',
       port: server._port,
       ssl: false,
+      sessionVariables: null,
     });
     connection.query(query, (err, _rows, _fields) => {
       if (err) {

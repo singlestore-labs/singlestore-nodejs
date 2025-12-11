@@ -113,6 +113,7 @@ exports.createConnection = function (args) {
     nestTables: args && args.nestTables,
     ssl: (args && args.ssl) ?? config.ssl,
     jsonStrings: args && args.jsonStrings,
+    sessionVariables: args.sessionVariables,
     disableEval,
   };
 

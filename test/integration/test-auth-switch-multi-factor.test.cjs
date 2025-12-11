@@ -94,6 +94,7 @@ portfinder.getPort((_, port) => {
   server.listen(port);
   const conn = mysql.createConnection({
     port: port,
+    sessionVariables: null,
     password: 'secret1',
     password2: 'secret2',
     password3: 'secret3',

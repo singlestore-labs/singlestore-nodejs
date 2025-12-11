@@ -72,6 +72,7 @@ portfinder.getPort((err, port) => {
     host: 'localhost',
     port: port,
     connectTimeout: 1000,
+    sessionVariables: null,
   });
 
   // return connect timeout error first
