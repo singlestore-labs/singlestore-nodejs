@@ -23,12 +23,12 @@ You will need these tools installed on your system:
 
 ## Development
 
-1. Fork the [MySQL2](https://github.com/sidorares/node-mysql2) repository.
-2. Download your forked repository locally. The website's workspace is the "_website_" directory in **node-mysql2** root.
+1. Fork the [SingleStore Node.js Driver](https://github.com/singlestore-labs/singlestore-nodejs) repository.
+2. Download your forked repository locally. The website's workspace is the "_website_" directory in **singlestore-nodejs** root.
 3. Create a new branch from `master` (optional).
 4. Run `cd website` to enter the website workspace.
-5. Run `npm ci` to install the dependecies from _package-lock.json_.
-6. Run `npm start` to starting the local development.
+5. Run `npm ci` to install the dependencies from _package-lock.json_.
+6. Run `npm start` to start the local development.
 
 > It will start a local development server and opens up a browser window. Most changes are reflected live without having to restart the server.
 
@@ -37,9 +37,9 @@ For **Docusaurus** complete documentation, please [see here](https://docusaurus.
 <FAQ title='CLI example'>
 
 ```bash
-git clone https://github.com/sidorares/node-mysql2.git
+git clone https://github.com/singlestore-labs/singlestore-nodejs.git
 git checkout -b website # optional
-cd /path-to/node-mysql2/website
+cd /path-to/singlestore-nodejs/website
 npm ci
 npm start
 ```
@@ -55,7 +55,7 @@ Documentation is auto-generated from **MDX** files placed in these directories:
 :::danger Caution
 Note that the website has its own _package.json_.
 
-Please, do not install dependencies for the website in **node-mysql2** root.
+Please, do not install dependencies for the website in **singlestore-nodejs** root.
 :::
 
 <hr />
@@ -181,12 +181,12 @@ import { ExternalCodeEmbed } from '@site/src/components/ExternalCodeEmbed';
 
 <FAQ title='Example'>
   <ExternalCodeEmbed
-    url='https://raw.githubusercontent.com/sidorares/node-mysql2/master/.prettierrc'
+    url='https://raw.githubusercontent.com/singlestore-labs/singlestore-nodejs/master/.prettierrc'
     language='json'
   />
 
   <ExternalCodeEmbed
-    url='https://raw.githubusercontent.com/sidorares/node-mysql2/master/tools/parse-row.js'
+    url='https://raw.githubusercontent.com/singlestore-labs/singlestore-nodejs/master/tools/parse-row.js'
     language='js'
     extractMethod='parseC'
     methodType='function'
