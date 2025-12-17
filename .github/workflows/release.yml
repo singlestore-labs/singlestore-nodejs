@@ -16,7 +16,7 @@ jobs:
         id: release
         with:
           release-type: node
-          package-name: mysql2
+          package-name: singlestore-nodejs
           changelog-path: 'Changelog.md'
 
       - uses: actions/checkout@v4
