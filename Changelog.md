@@ -1,5 +1,37 @@
 # Changelog
 
+## 3.14.1 (2025-12-17)
+
+
+### Features
+
+* **`disableEval`:** add static parsers ([#3365](https://github.com/singlestore-labs/singlestore-nodejs/issues/3365)) ([51da653](https://github.com/singlestore-labs/singlestore-nodejs/commit/51da653448855a57f87fa686a10fd8aa482da498))
+* add `RegExp` support to PoolCluster ([#3451](https://github.com/singlestore-labs/singlestore-nodejs/issues/3451)) ([2d5050d](https://github.com/singlestore-labs/singlestore-nodejs/commit/2d5050d59c28b269d1ef52b70a726777a34ecf1c))
+* **connection:** add option to set session variables ([#7](https://github.com/singlestore-labs/singlestore-nodejs/issues/7)) ([965ec90](https://github.com/singlestore-labs/singlestore-nodejs/commit/965ec90754f616601547c44387e6d5909260b383))
+* **PoolCluster:** `restoreNodeTimeout` implementation ([#3218](https://github.com/singlestore-labs/singlestore-nodejs/issues/3218)) ([9a38601](https://github.com/singlestore-labs/singlestore-nodejs/commit/9a3860186c12452c8e4b60d700d4e1599cc7aefa))
+* support Cloudflare Workers ([#2289](https://github.com/singlestore-labs/singlestore-nodejs/issues/2289)) ([a79253d](https://github.com/singlestore-labs/singlestore-nodejs/commit/a79253d17e5308a71501bbe8ed4df12f5805f0fd))
+
+
+### Bug Fixes
+
+* `PromisePoolCluster.of` returns `PromisePoolCluster` instead of `PoolNamespace` ([#3261](https://github.com/singlestore-labs/singlestore-nodejs/issues/3261)) ([be22202](https://github.com/singlestore-labs/singlestore-nodejs/commit/be22202e87afce0558dd079c79e0e18f45cd73ad))
+* 1040 datetime fields returned without time part when time is 00:00:00 ([#3204](https://github.com/singlestore-labs/singlestore-nodejs/issues/3204)) ([bded498](https://github.com/singlestore-labs/singlestore-nodejs/commit/bded4980065319e58a4f87d828cc355fb79f5bd3))
+* circular dependencies ([#3081](https://github.com/singlestore-labs/singlestore-nodejs/issues/3081)) ([d5a76e6](https://github.com/singlestore-labs/singlestore-nodejs/commit/d5a76e6c49fbb1bfea405ad809e3076fe5bda39d))
+* **createPoolCluster:** add pattern and selector to promise-based `getConnection` ([#3017](https://github.com/singlestore-labs/singlestore-nodejs/issues/3017)) ([ab7c49f](https://github.com/singlestore-labs/singlestore-nodejs/commit/ab7c49f24fad7b241cdc0046ead9917bbddccced)), closes [#1381](https://github.com/singlestore-labs/singlestore-nodejs/issues/1381)
+* Deno `v2` requires `commonjs` type explicitly ([#3209](https://github.com/singlestore-labs/singlestore-nodejs/issues/3209)) ([cdc9415](https://github.com/singlestore-labs/singlestore-nodejs/commit/cdc9415c7cbe5806996b05415841b283ae0bd85d))
+* pass columnType to readDateTimeString ([#3700](https://github.com/singlestore-labs/singlestore-nodejs/issues/3700)) ([1ee48cc](https://github.com/singlestore-labs/singlestore-nodejs/commit/1ee48cce69eb7d89c52ac2c0369d28b324bb7848))
+* **query:** support `VECTOR` packets in static parser ([#3379](https://github.com/singlestore-labs/singlestore-nodejs/issues/3379)) ([603c246](https://github.com/singlestore-labs/singlestore-nodejs/commit/603c24630da0f999a01227d44cf2633d703e40ed))
+* resolve LRU conflicts, cache loss and premature engine breaking change ([#2988](https://github.com/singlestore-labs/singlestore-nodejs/issues/2988)) ([2c3c858](https://github.com/singlestore-labs/singlestore-nodejs/commit/2c3c858fd0425b29f488a7cd24df749539c93aa2))
+* resolve parser cache collision with dual typeCast connections ([#3644](https://github.com/singlestore-labs/singlestore-nodejs/issues/3644)) ([ce2ad75](https://github.com/singlestore-labs/singlestore-nodejs/commit/ce2ad75a3223366a04f71008d6095111608a28c6))
+* **types:** correct TypeCast's Next callback to return unknown ([#3129](https://github.com/singlestore-labs/singlestore-nodejs/issues/3129)) ([401db79](https://github.com/singlestore-labs/singlestore-nodejs/commit/401db79b88cae8731a9eb334e456528134f821f9))
+* **typings:** synchronize types of sqlstring ([#3047](https://github.com/singlestore-labs/singlestore-nodejs/issues/3047)) ([81be01b](https://github.com/singlestore-labs/singlestore-nodejs/commit/81be01b1bce30cac3f6fcc130aaf859349c5d3d2))
+* update connection cleanup process to handle expired connections and exceeding `config.maxIdle` ([#3022](https://github.com/singlestore-labs/singlestore-nodejs/issues/3022)) ([b091cf4](https://github.com/singlestore-labs/singlestore-nodejs/commit/b091cf49d4165e991cb7c51dd6074be1c996a98e))
+
+
+### Miscellaneous Chores
+
+* release 3.14.1 ([9d097f8](https://github.com/singlestore-labs/singlestore-nodejs/commit/9d097f8dc2105b549e052172bf32fcf360fba742))
+
 ## [3.14.3](https://github.com/sidorares/node-mysql2/compare/v3.14.2...v3.14.3) (2025-07-29)
 
 
