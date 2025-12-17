@@ -1,8 +1,14 @@
 name: Release
+
 on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v1.0.0-test)"
+        required: true
 
 permissions:
   contents: write
@@ -14,6 +20,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Create local tag (manual run only)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git tag ${{ inputs.tag }}
+          git push origin ${{ inputs.tag }}
 
       - uses: actions/setup-node@v4
         with:
