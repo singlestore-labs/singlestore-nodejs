@@ -1,8 +1,14 @@
 name: Release
+
 on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Tag to release (e.g. v0.0.0-test)"
+        required: true
 
 permissions:
   contents: write
@@ -15,23 +21,23 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Ensure tag exists (manual run)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git tag ${{ inputs.tag }}
+          git push origin ${{ inputs.tag }}
+
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           registry-url: 'https://registry.npmjs.org'
-
-      - name: Cache dependencies
-        uses: actions/cache@v4
-        with:
-          path: ~/.npm
-          key: npm-linux-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-linux-
 
       - run: npm ci
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ inputs.tag || github.ref_name }}
           generate_release_notes: true
 
       - run: npm publish --provenance
