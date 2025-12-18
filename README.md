@@ -7,6 +7,7 @@
 [license-url]: https://github.com/sidorares/node-mysql2/blob/master/License
 [license-image]: https://img.shields.io/npm/l/mysql2.svg?maxAge=2592000
 [node-mysql]: https://github.com/mysqljs/mysql
+[node-mysql2]: https://github.com/sidorares/node-mysql2
 [mysqljs]: https://github.com/mysqljs
 [mysql-native]: https://github.com/sidorares/nodejs-mysql-native
 [sidorares]: https://github.com/sidorares
@@ -34,10 +35,11 @@
 [tests-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/tests.yml
 [gh-pages-image]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/gh-pages.yml/badge.svg?branch=master
 [gh-pages-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/gh-pages.yml
+[singlestore-docs]: https://docs.singlestore.com/
 
 # SingleStore Node.js Driver
 
-> SingleStore client for Node.js with focus on performance. Supports prepared statements, distributed queries, real-time analytics, compression, ssl and much more.
+> SingleStore client for Node.js with focus on performance. Supports configurable connection behavior, prepared statements, compression, ssl and much more.
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
@@ -52,7 +54,6 @@
 - [Why SingleStore Node.js Driver](#why-singlestore-nodejs-driver)
 - [Installation](#installation)
 - [Quick Start](#quick-start)
-- [Features](#features)
 - [Migration from MySQL2](#migration-from-mysql2)
 - [Documentation](#documentation)
 - [Contributing](#contributing)
@@ -62,20 +63,31 @@
 
 MySQL2 project is a continuation of [MySQL-Native][mysql-native]. Protocol parser code was rewritten from scratch and api changed to match popular [Node MySQL][node-mysql]. MySQL2 team is working together with [Node MySQL][node-mysql] team to factor out shared code and move it under [mysqljs][mysqljs] organization.
 
+MySQL2 is mostly API compatible with [Node MySQL][node-mysql] and supports majority of features. MySQL2 also offers these additional features:
+
+- Faster / Better Performance
+- [Prepared Statements][docs-prepared-statements]
+- MySQL Binary Log Protocol
+- [MySQL Server][docs-mysql-server]
+- Extended support for Encoding and Collation
+- [Promise Wrapper][docs-promise-wrapper]
+- Compression
+- SSL and [Authentication Switch][docs-authentication-switch]
+- [Custom Streams][docs-streams]
+- [Pooling][docs-qs-pooling]
+
 ## Why SingleStore Node.js Driver
 
-The SingleStore Node.js Driver is a fork of MySQL2, adapted specifically for SingleStore database. Since SingleStore is MySQL wire-protocol compatible, most MySQL2 features work seamlessly, with additional optimizations for SingleStore's distributed architecture and analytics capabilities.
+The SingleStore Node.js Driver is a fork of [mysql2][node-mysql2], adapted specifically for SingleStore database. Since SingleStore is MySQL wire-protocol compatible, most mysql2 features work seamlessly.
 
-This driver offers these features optimized for SingleStore:
+SingleStore Node.js Driver is mostly API compatible with [node-mysql][node-mysql] and [node-mysql2][node-mysql2] and supports majority of features.
 
-- **Faster / Better Performance** for distributed queries
-- **Connection routing** to appropriate nodes (aggregator/leaf)
-- **Support for ColumnStore and RowStore** tables
-- **Real-time analytics** optimizations
-- **Distributed query execution** handling
-- **Pipeline data ingestion** support
-- **Optimized batch inserts** for high-throughput scenarios
-- All existing MySQL2 features (Prepared Statements, Pooling, etc.)
+- **Official SingleStore Support**: Officially supported by SingleStore for guaranteed compatibility and reliability
+- **Consistent Data Type Handling**: Handles SingleStore data types more consistently than generic MySQL drivers
+- **Configurable Connection Behavior**: Allows you to configure connection behavior by setting session variables
+- **MySQL Compatibility**: Maintains full compatibility with MySQL wire protocol
+
+For more information about SingleStore, visit the [official documentation][singlestore-docs].
 
 ## Installation
 
@@ -117,18 +129,6 @@ connection
 // Close connection
 connection.end();
 ```
-
-## Features
-
-- **High Performance**: Optimized for SingleStore's distributed architecture
-- **Prepared Statements**: Binary protocol with prepared statements
-- **Connection Pooling**: Built-in connection pool management
-- **Promise Wrapper**: Native promise support
-- **Compression**: Protocol compression support
-- **SSL/TLS**: Secure connections
-- **Transaction Support**: Full transaction support
-- **Streaming**: Stream large result sets
-- **TypeScript**: Full TypeScript definitions included
 
 ## Migration from MySQL2
 
