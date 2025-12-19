@@ -5,10 +5,10 @@ import { navbarLocalePlugin, getLocaleURL } from './plugins/locale.js';
 
 const config: Config = {
   title: 'Quickstart',
-  url: 'https://sidorares.github.io/',
-  baseUrl: '/node-mysql2/',
-  organizationName: 'sidorares',
-  projectName: 'node-mysql2',
+  url: 'https://singlestore-labs.github.io/',
+  baseUrl: '/singlestore-nodejs/',
+  organizationName: 'singlestore-labs',
+  projectName: 'singlestore-nodejs',
   trailingSlash: false,
   favicon: 'img/favicon.svg',
 

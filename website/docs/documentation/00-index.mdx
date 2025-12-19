@@ -10,30 +10,31 @@ import { PageTitle } from '@site/src/components/PageTitle';
 # Documentation
 
 [node-mysql]: https://github.com/mysqljs/mysql
+[node-mysql2]: https://github.com/sidorares/node-mysql2
+[singlestore-docs]: https://docs.singlestore.com/
 
-MySQL2 aims to be a drop in replacement for [Node MySQL][node-mysql].
+**singlestore-nodejs** is a Node.js driver for SingleStoreDB, forked from [node-mysql2][node-mysql2]. It maintains compatibility with [Node MySQL][node-mysql] while providing optimized support for SingleStoreDB features.
 
 :::note
-_If you see any API incompatibilities with [Node MySQL][node-mysql], please report via github issue._
+_This driver is based on [node-mysql2][node-mysql2] and maintains API compatibility. If you encounter any problems, please report via GitHub issues._
 :::
 
-Not only **MySQL2** offers better performance over [Node MySQL][node-mysql], we also support these additional features:
+**singlestore-nodejs** offers:
 
 - [Prepared Statements](/docs/documentation/prepared-statements)
 - [Promise Wrapper](/docs/documentation/promise-wrapper)
 - [Authentication Switch](/docs/documentation/authentication-switch)
 - [More Features](/docs/documentation/extras)
-- [MySQL Server](/docs/documentation/mysql-server)
+- [SingleStore Server][singlestore-docs]
 - Pooling
 - [SSL](/docs/documentation/ssl)
-- MySQL Compression
-- Binary Log Protocol Client
+- Compression
 
 <hr />
 
 ## Examples
 
-Please check these [examples](/docs/examples) for **MySQL2**.
+Please check these [examples](/docs/examples) for **singlestore-nodejs**.
 
 <hr />
 
@@ -66,17 +67,13 @@ This option could lose precision on the number as Javascript Number is a Float!
 
 ## Other Resources
 
-- [Wire protocol documentation](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)
-- [Node MySQL][node-mysql] - Most popular node.js mysql client library
-- [node-mariasql](https://github.com/mscdex/node-mariasql/) - Bindings to libmariasql. One of the fastest clients
-- [node-libmysqlclient](https://github.com/Sannis/node-mysql-libmysqlclient) - Bindings to libmysqlclient
-- [go-mysql](https://github.com/siddontang/go-mysql) - MySQL Go client (prepared statements, binlog protocol, server)
+- [SingleStoreDB Documentation][singlestore-docs]
+- [MySQL Wire Protocol Documentation](https://dev.mysql.com/doc/internals/en/client-server-protocol.html)
+- [node-mysql2][node-mysql2] - The upstream MySQL client library this driver is based on
 
 <hr />
 
 ## Benchmarks
 
-- https://gist.github.com/sidorares/ffe9ee9c423f763e3b6b
 - `npm run benchmarks`
-- [node-mysql-benchmarks](https://github.com/mscdex/node-mysql-benchmarks)
-- try to run example [benchmarks](https://github.com/sidorares/node-mysql2/tree/master/benchmarks) on your system
+- try to run example [benchmarks](https://github.com/singlestore-labs/singlestore-nodejs/tree/master/benchmarks) on your system

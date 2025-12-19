@@ -1,20 +1,26 @@
-# History and Why MySQL2
+# History and Why SingleStore Node.js Driver
 
 [node-mysql]: https://github.com/mysqljs/mysql
-[mysql-native]: https://github.com/sidorares/nodejs-mysql-native
-[mysqljs]: https://github.com/mysqljs
+[node-mysql2]: https://github.com/sidorares/node-mysql2
+[singlestore-docs]: https://docs.singlestore.com/
 
-MySQL2 project is a continuation of [MySQL-Native][mysql-native]. Protocol parser code was rewritten from scratch and api changed to match popular [Node MySQL][node-mysql]. MySQL2 team is working together with [Node MySQL][node-mysql] team to factor out shared code and move it under [mysqljs][mysqljs] organization.
+The SingleStore Node.js Driver is a fork of [mysql2][node-mysql2], adapted specifically for SingleStore database. Since SingleStore is MySQL wire-protocol compatible, most mysql2 features work seamlessly.
+SingleStore Node.js Driver is mostly API compatible with [node-mysql][node-mysql] and [node-mysql2][node-mysql2] and supports majority of features. This driver also offers these features optimized for SingleStore:
 
-MySQL2 is mostly API compatible with [Node MySQL][node-mysql] and supports majority of features. MySQL2 also offers these additional features:
-
-- Faster / Better Performance
-- [Prepared Statements](/docs/documentation/prepared-statements)
-- MySQL Binary Log Protocol
-- [MySQL Server](/docs/documentation/mysql-server)
+- [SingleStore Server][singlestore-docs]
 - Extended support for Encoding and Collation
 - [Promise Wrapper](/docs/documentation/promise-wrapper)
 - Compression
+- [Prepared Statements](/docs/documentation/prepared-statements)
 - SSL and [Authentication Switch](/docs/documentation/authentication-switch)
 - [Custom Streams](/docs/documentation/extras#connecting-using-custom-stream)
 - [Pooling](/docs/#using-connection-pools)
+
+## Why Choose SingleStore Node.js Driver?
+
+- **Official SingleStore Support**: Officially supported by SingleStore for guaranteed compatibility and reliability
+- **Consistent Data Type Handling**: Handles SingleStore data types more consistently than generic MySQL drivers
+- **Configurable Connection Behavior**: Allows you to configure connection behavior by setting session variables
+- **MySQL Compatibility**: Maintains full compatibility with MySQL wire protocol
+
+For more information about SingleStore, visit the [official documentation][singlestore-docs].

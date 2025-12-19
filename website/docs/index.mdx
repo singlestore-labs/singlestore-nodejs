@@ -2,58 +2,60 @@
 slug: /
 position: 1
 title: Quickstart
-description: MySQL client for Node.js with focus on performance
+description: SingleStore client for Node.js with focus on performance
 ---
 
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 import { PageTitle } from '@site/src/components/PageTitle';
 
-<PageTitle title='MySQL2 | Quickstart' />
+<PageTitle title='SingleStore-Nodejs | Quickstart' />
 
-[npm-image]: https://img.shields.io/npm/v/mysql2.svg
-[npm-url]: https://npmjs.org/package/mysql2
-[node-version-image]: https://img.shields.io/node/v/mysql2.svg
+[npm-image]: https://img.shields.io/npm/v/singlestore-nodejs.svg
+[npm-url]: https://npmjs.org/package/singlestore-nodejs
+[node-version-image]: https://img.shields.io/node/v/singlestore-nodejs.svg
 [node-version-url]: https://nodejs.org/download/
-[downloads-image]: https://img.shields.io/npm/dm/mysql2.svg
-[downloads-url]: https://npmjs.org/package/mysql2
+[downloads-image]: https://img.shields.io/npm/dm/singlestore-nodejs.svg
+[downloads-url]: https://npmjs.org/package/singlestore-nodejs
 [license-url]: https://github.com/sidorares/node-mysql2/blob/master/License
 [license-image]: https://img.shields.io/npm/l/mysql2.svg?maxAge=2592000
 [node-mysql]: https://github.com/mysqljs/mysql
-[coverage]: https://img.shields.io/codecov/c/github/sidorares/node-mysql2
-[coverage-url]: https://app.codecov.io/github/sidorares/node-mysql2
-[ci-url]: https://github.com/sidorares/node-mysql2/actions/workflows/ci-coverage.yml?query=branch%3Amaster
-[ci-image]: https://img.shields.io/github/actions/workflow/status/sidorares/node-mysql2/ci-coverage.yml?event=push&style=flat&label=CI&branch=master
+[coverage]: https://img.shields.io/codecov/c/github/singlestore-labs/singlestore-nodejs
+[coverage-url]: https://app.codecov.io/github/singlestore-labs/singlestore-nodejs
+[ci-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/ci-coverage.yml?query=branch%3Amaster
+[ci-image]: https://img.shields.io/github/actions/workflow/status/singlestore-labs/singlestore-nodejs/ci-coverage.yml?event=push&style=flat&label=CI&branch=master
+[tests-image]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/tests.yml/badge.svg?branch=master
+[tests-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/tests.yml
+[gh-pages-image]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/gh-pages.yml/badge.svg?branch=master
+[gh-pages-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/gh-pages.yml
 
-# MySQL2
+# SingleStore-Nodejs
 
 {/* <Logo className='logo' width={150} height={150} /> */}
 
-MySQL client for Node.js with focus on performance. Supports prepared statements, non-utf8 encodings, binary log protocol, compression, ssl much more.
+SingleStore client for Node.js with focus on performance. Supports configurable connection behavior, prepared statements, compression, ssl and much more.
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![Node.js Version][node-version-image]][node-version-url]
-[![GitHub Workflow Status (with event)][ci-image]][ci-url]
-[![Codecov][coverage]][coverage-url]
 [![License][license-image]][license-url]
 
 ## Installation
 
-MySQL2 is free from native bindings and can be installed on Linux, Mac OS or Windows without any issues.
+SingleStore-Nodejs is free from native bindings and can be installed on Linux, Mac OS or Windows without any issues.
 
 <Tabs>
   <TabItem value='JavaScript' default>
 
 ```bash
-npm install --save mysql2
+npm install --save singlestore-nodejs
 ```
 
   </TabItem>
   <TabItem value='TypeScript'>
 
 ```bash
-npm install --save mysql2
+npm install --save singlestore-nodejs
 npm install --save-dev @types/node
 ```
 
@@ -73,10 +75,10 @@ npm install --save-dev @types/node
 
 ```js
 // Get the client
-import mysql from 'mysql2/promise';
+import singlestore from 'singlestore-nodejs/promise';
 
 // Create the connection to database
-const connection = await mysql.createConnection({
+const connection = await singlestore.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -112,10 +114,10 @@ try {
 
 ```js
 // Get the client
-const mysql = require('mysql2');
+const singlestore = require('singlestore-nodejs');
 
 // Create the connection to database
-const connection = mysql.createConnection({
+const connection = singlestore.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -147,11 +149,20 @@ connection.query(
 
 ### Using Prepared Statements
 
-With MySQL2 you also get the prepared statements. With prepared statements MySQL doesn't have to prepare plan for same query every time, this results in better performance. If you don't know why they are important, please check these discussions:
+SingleStore-Nodejs supports prepared statements primarily for compatibility with MySQL drivers and existing codebases. However, **SingleStore automatically compiles and optimizes both text and binary protocol queries**, so you get performance benefits even with regular queries.
+
+**Important Notes:**
+
+- SingleStore compiles queries sent through both text and binary protocols automatically
+- You get query optimization benefits with regular `.query()` calls
+- Some queries (like `EXPLAIN`, `SHOW` commands) cannot be run as prepared statements
+- Manual preparation with `prepare`/`unprepare` methods is generally not recommended
+
+If you don't know why prepared statements are traditionally important in other databases, please check these discussions:
 
 - [How prepared statements can protect from SQL Injection attacks](https://stackoverflow.com/questions/8263371/how-can-prepared-statements-protect-from-sql-injection-attacks)
 
-MySQL2 provides `execute` helper which will prepare and query the statement. You can also manually prepare / unprepare statement with `prepare` / `unprepare` methods.
+SingleStore-Nodejs provides `execute` helper for compatibility. You can also manually prepare / unprepare statements with `prepare` / `unprepare` methods if needed for compatibility, but regular queries are typically preferred.
 
 > To explore more Prepared Statements and Placeholders examples, please visit the example section [**Prepared Statements**](/docs/examples/queries/prepared-statements).
 
@@ -159,11 +170,11 @@ MySQL2 provides `execute` helper which will prepare and query the statement. You
   <TabItem value='Promise' default>
 
 ```js
-import mysql from 'mysql2/promise';
+import singlestore from 'singlestore-nodejs/promise';
 
 try {
   // create the connection to database
-  const connection = await mysql.createConnection({
+  const connection = await singlestore.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'test',
@@ -186,10 +197,10 @@ try {
   <TabItem value='Callback'>
 
 ```js
-const mysql = require('mysql2');
+const singlestore = require('singlestore-nodejs');
 
 // create the connection to database
-const connection = mysql.createConnection({
+const connection = singlestore.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -217,7 +228,7 @@ If you execute same statement again, it will be picked from a LRU cache which wi
 
 ### Using Connection Pools
 
-Connection pools help reduce the time spent connecting to the MySQL server by reusing a previous connection, leaving them open instead of closing when you are done with them.
+Connection pools help reduce the time spent connecting to the SingleStore server by reusing a previous connection, leaving them open instead of closing when you are done with them.
 
 This improves the latency of queries as you avoid all of the overhead that comes with establishing a new connection.
 
@@ -227,10 +238,10 @@ This improves the latency of queries as you avoid all of the overhead that comes
   <TabItem value='Promise' default>
 
 ```js
-import mysql from 'mysql2/promise';
+import singlestore from 'singlestore-nodejs/promise';
 
 // Create the connection pool. The pool-specific settings are the defaults
-const pool = mysql.createPool({
+const pool = singlestore.createPool({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -248,10 +259,10 @@ const pool = mysql.createPool({
     <TabItem value='Callback'>
 
 ```js
-const mysql = require('mysql2');
+const singlestore = require('singlestore-nodejs');
 
 // Create the connection pool. The pool-specific settings are the defaults
-const pool = mysql.createPool({
+const pool = singlestore.createPool({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -345,14 +356,14 @@ conn.release();
 
 ### Using Promise Wrapper
 
-MySQL2 also support Promise API. Which works very well with ES7 async await.
+SingleStore-Nodejs also supports Promise API. Which works very well with ES7 async await.
 
 ```js
-import mysql from 'mysql2/promise';
+import singlestore from 'singlestore-nodejs/promise';
 
 async function main() {
   // create the connection
-  const connection = await mysql.createConnection({
+  const connection = await singlestore.createConnection({
     host: 'localhost',
     user: 'root',
     database: 'test',
@@ -366,17 +377,17 @@ async function main() {
 }
 ```
 
-MySQL2 use default `Promise` object available in scope. But you can choose which `Promise` implementation you want to use.
+SingleStore-Nodejs uses default `Promise` object available in scope. But you can choose which `Promise` implementation you want to use.
 
 ```js
 // get the client
-import mysql from 'mysql2/promise';
+import singlestore from 'singlestore-nodejs/promise';
 
 // get the promise implementation, we will use bluebird
 import bluebird from 'bluebird';
 
 // create the connection, specify bluebird as Promise
-const connection = await mysql.createConnection({
+const connection = await singlestore.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -390,14 +401,14 @@ const [rows, fields] = await connection.execute(
 );
 ```
 
-MySQL2 also exposes a `.promise()` function on Pools, so you can create a promise/non-promise connections from the same pool.
+SingleStore-Nodejs also exposes a `.promise()` function on Pools, so you can create a promise/non-promise connections from the same pool.
 
 ```js
-import mysql from 'mysql2';
+import singlestore from 'singlestore-nodejs';
 
 async function main() {
   // create the pool
-  const pool = mysql.createPool({
+  const pool = singlestore.createPool({
     host: 'localhost',
     user: 'root',
     database: 'test',
@@ -411,13 +422,13 @@ async function main() {
 }
 ```
 
-MySQL2 exposes a `.promise()` function on Connections, to "upgrade" an existing non-promise connection to use promise.
+SingleStore-Nodejs exposes a `.promise()` function on Connections, to "upgrade" an existing non-promise connection to use promise.
 
 ```js {11}
-const mysql = require('mysql2');
+const singlestore = require('singlestore-nodejs');
 
 // create the connection
-const conn = mysql.createConnection({
+const conn = singlestore.createConnection({
   host: 'localhost',
   user: 'root',
   database: 'test',
@@ -449,7 +460,7 @@ You can enable this setting at either the connection level (applies to all queri
   <TabItem value='Promise' default>
 
 ```js {5}
-const conn = await mysql.createConnection({
+const conn = await singlestore.createConnection({
   host: 'localhost',
   database: 'test',
   user: 'root',
@@ -461,7 +472,7 @@ const conn = await mysql.createConnection({
   <TabItem value='Callback'>
 
 ```js {5}
-const conn = mysql.createConnection({
+const conn = singlestore.createConnection({
   host: 'localhost',
   database: 'test',
   user: 'root',
@@ -513,6 +524,6 @@ conn.query(
 <hr />
 
 :::tip Getting Help
-Need help? Ask your question on [Stack Overflow](https://stackoverflow.com/questions/tagged/mysql2) or [GitHub](https://github.com/sidorares/node-mysql2/discussions).
-If you've encountered an issue, please [file it on GitHub](https://github.com/sidorares/node-mysql2/issues).
+Need help? Ask your question on [Stack Overflow](https://stackoverflow.com/questions/tagged/singlestore-nodejs) or [GitHub](https://github.com/singlestore-labs/singlestore-nodejs/discussions).
+If you've encountered an issue, please [file it on GitHub](https://github.com/singlestore-labs/singlestore-nodejs/issues).
 :::

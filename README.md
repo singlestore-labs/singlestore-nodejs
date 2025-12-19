@@ -7,6 +7,7 @@
 [license-url]: https://github.com/sidorares/node-mysql2/blob/master/License
 [license-image]: https://img.shields.io/npm/l/mysql2.svg?maxAge=2592000
 [node-mysql]: https://github.com/mysqljs/mysql
+[node-mysql2]: https://github.com/sidorares/node-mysql2
 [mysqljs]: https://github.com/mysqljs
 [mysql-native]: https://github.com/sidorares/nodejs-mysql-native
 [sidorares]: https://github.com/sidorares
@@ -14,48 +15,49 @@
 [starttls.js]: https://gist.github.com/TooTallNate/848444
 [node-mariasql]: https://github.com/mscdex/node-mariasql
 [contributors]: https://github.com/sidorares/node-mysql2/graphs/contributors
-[contributing]: https://github.com/sidorares/node-mysql2/blob/master/Contributing.md
-[docs-base]: https://sidorares.github.io/node-mysql2/docs
-[docs-base-zh-CN]: https://sidorares.github.io/node-mysql2/zh-CN/docs
-[docs-base-pt-BR]: https://sidorares.github.io/node-mysql2/pt-BR/docs
-[docs-prepared-statements]: https://sidorares.github.io/node-mysql2/docs/documentation/prepared-statements
-[docs-mysql-server]: https://sidorares.github.io/node-mysql2/docs/documentation/mysql-server
-[docs-promise-wrapper]: https://sidorares.github.io/node-mysql2/docs/documentation/promise-wrapper
-[docs-authentication-switch]: https://sidorares.github.io/node-mysql2/docs/documentation/authentication-switch
+[contributing]: https://github.com/singlestore-labs/singlestore-nodejs/blob/master/Contributing.md
+[docs-base]: https://singlestore-labs.github.io/singlestore-nodejs/docs
+[docs-api]: https://singlestore-labs.github.io/singlestore-nodejs/docs/api-and-configurations
+[docs-prepared-statements]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/prepared-statements
+[docs-mysql-server]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/mysql-server
+[docs-promise-wrapper]: https://singlestore-labs.github.io/singlestore-nodejs/documentation/promise-wrapper
+[docs-authentication-switch]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/authentication-switch
 [docs-streams]: https://sidorares.github.io/node-mysql2/docs/documentation/extras
 [docs-typescript-docs]: https://sidorares.github.io/node-mysql2/docs/documentation/typescript-examples
-[docs-qs-pooling]: https://sidorares.github.io/node-mysql2/docs#using-connection-pools
-[docs-qs-first-query]: https://sidorares.github.io/node-mysql2/docs#first-query
-[docs-qs-using-prepared-statements]: https://sidorares.github.io/node-mysql2/docs#using-prepared-statements
-[docs-examples]: https://sidorares.github.io/node-mysql2/docs/examples
-[docs-faq]: https://sidorares.github.io/node-mysql2/docs/faq
-[docs-documentation]: https://sidorares.github.io/node-mysql2/docs/documentation
-[docs-contributing]: https://sidorares.github.io/node-mysql2/docs/contributing/website
-[coverage]: https://img.shields.io/codecov/c/github/sidorares/node-mysql2
-[coverage-url]: https://app.codecov.io/github/sidorares/node-mysql2
-[ci-url]: https://github.com/sidorares/node-mysql2/actions/workflows/ci-coverage.yml?query=branch%3Amaster
-[ci-image]: https://img.shields.io/github/actions/workflow/status/sidorares/node-mysql2/ci-coverage.yml?event=push&style=flat&label=CI&branch=master
+[docs-qs-pooling]: https://singlestore-labs.github.io/singlestore-nodejs/docs#using-connection-pools
+[docs-qs-first-query]: https://singlestore-labs.github.io/singlestore-nodejs/docs#first-query
+[docs-qs-using-prepared-statements]: https://singlestore-labs.github.io/singlestore-nodejs/docs#using-prepared-statements
+[docs-examples]: https://singlestore-labs.github.io/singlestore-nodejs/docs/examples
+[docs-faq]: https://singlestore-labs.github.io/singlestore-nodejs/docs/faq
+[docs-documentation]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation
+[docs-contributing]: https://singlestore-labs.github.io/singlestore-nodejs/docs/contributing
+[tests-image]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/tests.yml/badge.svg?branch=master
+[tests-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/tests.yml
+[gh-pages-image]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/gh-pages.yml/badge.svg?branch=master
+[gh-pages-url]: https://github.com/singlestore-labs/singlestore-nodejs/actions/workflows/gh-pages.yml
+[singlestore-docs]: https://docs.singlestore.com/
 
-# MySQL2
+# SingleStore Node.js Driver
+
+> SingleStore client for Node.js with focus on performance. Supports configurable connection behavior, prepared statements, compression, ssl and much more.
 
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][downloads-url]
 [![Node.js Version][node-version-image]][node-version-url]
-[![GitHub Workflow Status (with event)][ci-image]][ci-url]
-[![Codecov][coverage]][coverage-url]
+[![Tests][tests-image]][tests-url]
+[![GitHub Pages][gh-pages-image]][gh-pages-url]
 [![License][license-image]][license-url]
 
-[English][docs-base] | [简体中文][docs-base-zh-CN] | [Português (BR)][docs-base-pt-BR]
-
-> MySQL client for Node.js with focus on performance. Supports prepared statements, non-utf8 encodings, binary log protocol, compression, ssl [much more][docs-documentation].
-
-**Table of Contents**
+## Table of Contents
 
 - [History and Why MySQL2](#history-and-why-mysql2)
+- [Why SingleStore Node.js Driver](#why-singlestore-nodejs-driver)
 - [Installation](#installation)
+- [Quick Start](#quick-start)
+- [Migration from MySQL2](#migration-from-mysql2)
 - [Documentation](#documentation)
-- [Acknowledgements](#acknowledgements)
 - [Contributing](#contributing)
+- [Acknowledgments](#acknowledgments)
 
 ## History and Why MySQL2
 
@@ -74,41 +76,89 @@ MySQL2 is mostly API compatible with [Node MySQL][node-mysql] and supports major
 - [Custom Streams][docs-streams]
 - [Pooling][docs-qs-pooling]
 
+## Why SingleStore Node.js Driver
+
+The SingleStore Node.js Driver is a fork of [mysql2][node-mysql2], adapted specifically for SingleStore database. Since SingleStore is MySQL wire-protocol compatible, most mysql2 features work seamlessly.
+
+SingleStore Node.js Driver is mostly API compatible with [node-mysql][node-mysql] and [node-mysql2][node-mysql2] and supports majority of features.
+
+- **Official SingleStore Support**: Officially supported by SingleStore for guaranteed compatibility and reliability
+- **Consistent Data Type Handling**: Handles SingleStore data types more consistently than generic MySQL drivers
+- **Configurable Connection Behavior**: Allows you to configure connection behavior by setting session variables
+- **MySQL Compatibility**: Maintains full compatibility with MySQL wire protocol
+
+For more information about SingleStore, visit the [official documentation][singlestore-docs].
+
 ## Installation
 
-MySQL2 is free from native bindings and can be installed on Linux, Mac OS or Windows without any issues.
-
 ```bash
-npm install --save mysql2
+npm install singlestore-nodejs
 ```
 
 If you are using TypeScript, you will need to install `@types/node`.
 
-```bash
-npm install --save-dev @types/node
+## Quick Start
+
+```javascript
+const singlestore = require('singlestore_nodejs');
+
+// Create connection
+const connection = singlestore.createConnection({
+  host: 'localhost',
+  user: 'root',
+  password: 'password',
+  database: 'mydb',
+  port: 3306,
+});
+
+// Simple query
+connection.query('SELECT * FROM users', (err, results, fields) => {
+  if (err) throw err;
+  console.log(results);
+});
+
+// Using promises
+connection
+  .promise()
+  .query('SELECT * FROM products')
+  .then(([rows, fields]) => {
+    console.log(rows);
+  })
+  .catch(console.error);
+
+// Close connection
+connection.end();
 ```
 
-> For TypeScript documentation and examples, see [here][docs-typescript-docs].
+## Migration from MySQL2
+
+SingleStore Node.js Driver is API-compatible with MySQL2, so migration is straightforward:
+
+```javascript
+// Before (MySQL2)
+const mysql = require('mysql2');
+const connection = mysql.createConnection({...});
+
+// After (SingleStore Node.js Driver)
+const singlestore = require('singlestore_nodejs');
+const connection = singlestore.createConnection({...});
+
+// All existing queries work as-is!
+```
 
 ## Documentation
 
-- [Quickstart][docs-base]
-  - [First Query][docs-qs-first-query], [Using Prepared Statements][docs-qs-using-prepared-statements], [Using Connection Pools][docs-qs-pooling] and more.
-- [Documentation][docs-documentation]
+📚 **Full documentation:** [SingleStore Nodejs Driver][docs-base]
+
+- [Getting Started][docs-documentation]
 - [Examples][docs-examples]
 - [FAQ][docs-faq]
-
-## Acknowledgements
-
-- Internal protocol is written by [@sidorares][sidorares] [MySQL-Native][mysql-native].
-- Constants, SQL parameters interpolation, Pooling, `ConnectionConfig` class taken from [Node MySQL][node-mysql].
-- SSL upgrade code based on [@TooTallNate][TooTallNate] [code][starttls.js].
-- Secure connection / compressed connection api flags compatible to [MariaSQL][node-mariasql] client.
-- [Contributors][contributors].
+- [API Reference][docs-api]
 
 ## Contributing
 
-Want to improve something in **MySQL2**?
-Please check [Contributing.md][contributing] for detailed instruction on how to get started.
+Contributions are welcome! Please see [Contributing.md](Contributing.md) for details.
 
-To contribute in **MySQL2 Documentation**, please visit the [Website Contributing Guidelines][docs-contributing] for detailed instruction on how to get started.
+## Acknowledgments
+
+This project is a fork of [mysql2](https://github.com/sidorares/node-mysql2) by @sidorares. We are grateful for the excellent foundation provided by the MySQL2 project.
