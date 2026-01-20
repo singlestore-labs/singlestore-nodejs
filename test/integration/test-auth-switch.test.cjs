@@ -14,7 +14,7 @@ if (typeof Deno !== 'undefined') process.exit(0);
 const connectAttributes = { foo: 'bar', baz: 'foo' };
 
 const defaultConnectAttributes = {
-  _client_name: 'Node-MySQL-2',
+  _client_name: 'SingleStore NodeJS Client',
   _client_version: version,
 };
 
