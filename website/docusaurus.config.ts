@@ -39,7 +39,7 @@ const config: Config = {
         docs: {
           sidebarPath: './sidebars.ts',
           editUrl:
-            'https://github.com/sidorares/node-mysql2/tree/master/website/',
+            'https://github.com/singlestore-labs/singlestore-nodejs/tree/master/website/',
         },
         theme: {
           customCss: './src/css/custom.scss',
@@ -59,7 +59,7 @@ const config: Config = {
       items: [
         {
           to: getLocaleURL(),
-          label: 'MySQL2',
+          label: 'SingleStore',
           position: 'left',
           className: 'navbar__brand navbar__manual--title text--truncate',
           activeBaseRegex: '^/$',
@@ -80,18 +80,13 @@ const config: Config = {
           position: 'left',
         },
         {
-          href: 'https://github.com/sidorares/node-mysql2',
+          href: 'https://github.com/singlestore-labs/singlestore-nodejs',
           label: 'GitHub',
           position: 'right',
         },
         {
-          href: 'https://stackoverflow.com/questions/tagged/mysql2',
+          href: 'https://stackoverflow.com/questions/tagged/singlestore',
           label: 'Stack Overflow',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/sponsors/sidorares',
-          label: 'Donate',
           position: 'right',
         },
         { type: 'search', position: 'right' },
