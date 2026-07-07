@@ -159,6 +159,8 @@ const connection = singlestore.createConnection({...});
 
 Contributions are welcome! Please see [Contributing.md](Contributing.md) for details.
 
+For the release flow, see [RELEASING.md](RELEASING.md).
+
 ## Acknowledgments
 
 This project is a fork of [mysql2](https://github.com/sidorares/node-mysql2) by @sidorares. We are grateful for the excellent foundation provided by the MySQL2 project.
