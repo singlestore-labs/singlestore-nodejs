@@ -7,9 +7,15 @@ on:
       - 'website/**'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    concurrency:
+      group: gh-pages
+      cancel-in-progress: true
     steps:
       - name: Actions - Checkout
         uses: actions/checkout@v4
