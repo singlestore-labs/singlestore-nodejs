@@ -1,4 +1,6 @@
-## Releasing
+# Releasing
+
+## Release steps
 
 Bump the version in `package.json` and `package-lock.json` on `master`, then push a semver tag (`v*.*.*`). That triggers the [Release](.github/workflows/release.yml) GitHub Action. It runs the full test suite against SingleStore, creates a GitHub release with auto-generated notes, and publishes to npm.
 
@@ -33,3 +35,11 @@ bash run-all-tests.sh
 See [Contributing.md](Contributing.md#running-tests) for SingleStore setup details.
 
 Pull requests run the [Run Tests](.github/workflows/tests.yml) workflow. The [Release](.github/workflows/release.yml) workflow runs the same tests before publishing.
+
+## Driver-Server Version Compatibility Matrix
+
+After each release, add a row for the new version rather than copying an older row's engine list. While CI has no pinned engine matrix, take the list from the [EOL policy](https://docs.singlestore.com/db/v9.1/support/singlestore-software-end-of-life-eol-policy/) as of the new tag's date.
+
+| Driver Version | Release date | Supported engine versions |
+| --- | --- | --- |
+| 1.0.1 | 2026-01-07 | 8.5, 8.7, 8.9, 9.0 |
