@@ -40,6 +40,6 @@ Pull requests run the [Run Tests](.github/workflows/tests.yml) workflow. The [Re
 
 After each release, add a row for the new version rather than copying an older row's engine list. While CI has no pinned engine matrix, take the list from the [EOL policy](https://docs.singlestore.com/db/v9.1/support/singlestore-software-end-of-life-eol-policy/) as of the new tag's date.
 
-| Driver Version | Release date | Supported engine versions |
-| --- | --- | --- |
-| 1.0.1 | 2026-01-07 | 8.5, 8.7, 8.9, 9.0 |
+| Driver Version | Release date | Supported engine versions | Node Version |
+| -------------- | ------------ | ------------------------- | ------------ |
+| 1.0.1          | 2026-01-07   | 8.5, 8.7, 8.9, 9.0        | >= 8.0       |
