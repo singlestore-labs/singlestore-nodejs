@@ -147,6 +147,17 @@ connection.query(
 
 <hr />
 
+### Load data from local files or memory
+
+Use `LOAD DATA LOCAL INFILE` to bulk-load into SingleStore from the **client** (your Node app), not from the server disk.
+
+- **Local file:** `infileStreamFactory` on the connection or query (for example `fs.createReadStream(path)`).
+- **In-memory stream:** `infileStream` on the query; the filename in SQL is ignored.
+
+Details and examples: [LOAD DATA LOCAL INFILE](/docs/documentation/extras#load-data-local-infile).
+
+<hr />
+
 ### Using Prepared Statements
 
 SingleStore-Nodejs supports prepared statements primarily for compatibility with MySQL drivers and existing codebases. However, **SingleStore automatically compiles and optimizes both text and binary protocol queries**, so you get performance benefits even with regular queries.

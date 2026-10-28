@@ -3,7 +3,12 @@
 const common = require('../../common.test.cjs');
 const { assert } = require('poku');
 const fs = require('node:fs');
+const { Readable } = require('node:stream');
 const process = require('node:process');
+const mysql = require('../../../index.js');
+
+const LOCAL_INFILE_DISABLED_MESSAGE =
+  'Local infile is disabled by connector. Enable `local_infile` to allow local infile commands';
 
 if (`${process.env.MYSQL_CONNECTION_URL}`.includes('pscale_pw_')) {
   console.log('skipping test for planetscale');
@@ -76,6 +81,8 @@ const createMyStream = function () {
 };
 
 let streamResult;
+let memoryResult;
+let disabledErr;
 connection.query(
   {
     sql: sql,
@@ -87,7 +94,56 @@ connection.query(
       throw err;
     }
     streamResult = result;
-    connection.end();
+    connection.query(
+      {
+        sql: `LOAD DATA LOCAL INFILE ':stream:' INTO TABLE ${table} FIELDS TERMINATED BY ',' (id, title)`,
+        infileStream: Readable.from([
+          '31,From Memory\n',
+          '32,Still',
+          ' Memory\n',
+        ]),
+        infileStreamFactory: () => {
+          throw new Error(
+            'infileStreamFactory must not run when infileStream is set'
+          );
+        },
+      },
+      (memErr, memResult) => {
+        if (memErr) {
+          throw memErr;
+        }
+        memoryResult = memResult;
+        const disabled = mysql.createConnection({
+          ...common.config,
+          local_infile: false,
+        });
+        disabled.query(
+          [
+            `CREATE TEMPORARY TABLE \`${table}\` (`,
+            '`id` int(11) unsigned NOT NULL,',
+            '`title` varchar(255)',
+            ')',
+          ].join('\n'),
+          (createErr) => {
+            if (createErr) {
+              throw createErr;
+            }
+            disabled.query(
+              {
+                sql: `LOAD DATA LOCAL INFILE ':stream:' INTO TABLE ${table} FIELDS TERMINATED BY ',' (id, title)`,
+                infileStream: Readable.from(['99,should-not-load\n']),
+              },
+              (loadError) => {
+                disabledErr = loadError;
+                disabled.end(() => {
+                  connection.end();
+                });
+              }
+            );
+          }
+        );
+      }
+    );
   }
 );
 
@@ -104,4 +160,6 @@ process.on('exit', () => {
   assert.equal(loadResult.affectedRows, 0);
 
   assert.equal(streamResult.affectedRows, 2);
+  assert.equal(memoryResult.affectedRows, 2);
+  assert.equal(disabledErr.message, LOCAL_INFILE_DISABLED_MESSAGE);
 });

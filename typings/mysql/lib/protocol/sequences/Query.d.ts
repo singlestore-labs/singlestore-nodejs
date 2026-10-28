@@ -83,6 +83,13 @@ export interface QueryOptions {
    * By specifying a function that returns a readable stream, an arbitrary stream can be sent when sending a local fs file.
    */
   infileStreamFactory?: (path: string) => Readable;
+
+  /**
+   * In-memory bytes for `LOAD DATA LOCAL INFILE`.
+   * When set, this stream is uploaded and the filename requested by the server is ignored.
+   * Takes precedence over `infileStreamFactory`.
+   */
+  infileStream?: Readable;
 }
 
 export interface StreamOptions {

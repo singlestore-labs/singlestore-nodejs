@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.0.2] - singlestore-nodejs (unreleased)
+
+### Features
+
+- **`infileStream` query option** — stream in-memory bytes for `LOAD DATA LOCAL INFILE` without reading a client file; SQL filename is ignored (aligned with SingleStore stream-based load documentation).
+- **`local_infile` connection option** — explicit enable/disable for `LOAD DATA LOCAL INFILE` (default enabled); clearer client error when disabled.
+- **Prepared statement / pool cluster** — connection-level `infileStreamFactory` is passed through `statement.execute()` and `PoolCluster.query()`.
+
+### Documentation
+
+- README and site docs describe both local-file (`infileStreamFactory`) and in-memory (`infileStream`) loads wherever `LOAD DATA LOCAL INFILE` is documented.
+
 ## [3.14.3](https://github.com/sidorares/node-mysql2/compare/v3.14.2...v3.14.3) (2025-07-29)
 
 

@@ -1,6 +1,7 @@
 'use strict';
 
 const ConnectionConfig = require('../../../lib/connection_config.js');
+const ClientConstants = require('../../../lib/constants/client.js');
 const { assert } = require('poku');
 
 const expectedMessage = "SSL profile must be an object, instead it's a boolean";
@@ -76,3 +77,41 @@ assert.strictEqual(
   ).database,
   'database$'
 );
+
+const hasLocalFiles = (config) =>
+  (config.clientFlags & ClientConstants.LOCAL_FILES) !== 0;
+
+const defaultConfig = new ConnectionConfig({});
+assert.strictEqual(defaultConfig.localInfile, true);
+assert.strictEqual(hasLocalFiles(defaultConfig), true);
+
+const disabledConfig = new ConnectionConfig({ local_infile: false });
+assert.strictEqual(disabledConfig.localInfile, false);
+assert.strictEqual(hasLocalFiles(disabledConfig), false);
+
+assert.strictEqual(
+  new ConnectionConfig({ local_infile: 0 }).localInfile,
+  false
+);
+assert.strictEqual(
+  new ConnectionConfig({ local_infile: 'false' }).localInfile,
+  false
+);
+
+const optedOut = new ConnectionConfig({ flags: '-LOCAL_FILES' });
+assert.strictEqual(optedOut.localInfile, false);
+assert.strictEqual(hasLocalFiles(optedOut), false);
+
+const forcedOn = new ConnectionConfig({
+  local_infile: true,
+  flags: '-LOCAL_FILES',
+});
+assert.strictEqual(forcedOn.localInfile, true);
+assert.strictEqual(hasLocalFiles(forcedOn), true);
+
+const forcedOff = new ConnectionConfig({
+  local_infile: false,
+  flags: 'LOCAL_FILES',
+});
+assert.strictEqual(forcedOff.localInfile, false);
+assert.strictEqual(hasLocalFiles(forcedOff), false);

@@ -173,6 +173,14 @@ export interface ConnectionOptions {
   infileStreamFactory?: (path: string) => Readable;
 
   /**
+   * Allow `LOAD DATA LOCAL INFILE`, including in-memory streams. (Default: true)
+   *
+   * Set to `false` to refuse both file and stream loads. Equivalent connection
+   * URLs use `local_infile=false`.
+   */
+  local_infile?: boolean;
+
+  /**
    * Determines if column values should be converted to native JavaScript types.
    *
    * @default true
