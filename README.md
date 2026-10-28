@@ -22,7 +22,8 @@
 [docs-mysql-server]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/mysql-server
 [docs-promise-wrapper]: https://singlestore-labs.github.io/singlestore-nodejs/documentation/promise-wrapper
 [docs-authentication-switch]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/authentication-switch
-[docs-streams]: https://sidorares.github.io/node-mysql2/docs/documentation/extras
+[docs-load-data]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/extras#load-data-local-infile
+[docs-streams]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/extras#connecting-using-custom-stream
 [docs-typescript-docs]: https://sidorares.github.io/node-mysql2/docs/documentation/typescript-examples
 [docs-qs-pooling]: https://singlestore-labs.github.io/singlestore-nodejs/docs#using-connection-pools
 [docs-qs-first-query]: https://singlestore-labs.github.io/singlestore-nodejs/docs#first-query
@@ -73,6 +74,7 @@ MySQL2 is mostly API compatible with [Node MySQL][node-mysql] and supports major
 - [Promise Wrapper][docs-promise-wrapper]
 - Compression
 - SSL and [Authentication Switch][docs-authentication-switch]
+- [LOAD DATA LOCAL INFILE][docs-load-data] (local files and in-memory streams)
 - [Custom Streams][docs-streams]
 - [Pooling][docs-qs-pooling]
 
@@ -86,6 +88,7 @@ SingleStore Node.js Driver is mostly API compatible with [node-mysql][node-mysql
 - **Consistent Data Type Handling**: Handles SingleStore data types more consistently than generic MySQL drivers
 - **Configurable Connection Behavior**: Allows you to configure connection behavior by setting session variables
 - **MySQL Compatibility**: Maintains full compatibility with MySQL wire protocol
+- **Bulk load**: `LOAD DATA LOCAL INFILE` from client files (`infileStreamFactory`) or in-memory streams (`infileStream`)
 
 For more information about SingleStore, visit the [official documentation][singlestore-docs].
 
@@ -100,7 +103,7 @@ If you are using TypeScript, you will need to install `@types/node`.
 ## Quick Start
 
 ```javascript
-const singlestore = require('singlestore_nodejs');
+const singlestore = require('singlestore-nodejs');
 
 // Create connection
 const connection = singlestore.createConnection({
@@ -140,11 +143,22 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({...});
 
 // After (SingleStore Node.js Driver)
-const singlestore = require('singlestore_nodejs');
+const singlestore = require('singlestore-nodejs');
 const connection = singlestore.createConnection({...});
 
 // All existing queries work as-is!
 ```
+
+## Load data from local files and in-memory streams
+
+Use `LOAD DATA LOCAL INFILE` to bulk-load CSV (or other `LOAD DATA` formats) into SingleStore. The driver reads data on the **client** (your Node process), not from the database server disk.
+
+- **Local file:** set `infileStreamFactory` on the connection or query so the driver opens the path the server requests (for example `fs.createReadStream(path)`).
+- **In-memory stream:** pass `infileStream` on the query (a Node.js `Readable`). The filename in SQL is ignored; use a placeholder such as `':stream:'`. This matches [SingleStore stream-based load](https://docs.singlestore.com/db/v9.1/load-data/load-data-from-files/load-data-from-local-files/).
+
+`local_infile` defaults to `true`. Set `local_infile: false` to refuse file and stream loads on that connection.
+
+See [LOAD DATA LOCAL INFILE][docs-load-data] for examples.
 
 ## Documentation
 

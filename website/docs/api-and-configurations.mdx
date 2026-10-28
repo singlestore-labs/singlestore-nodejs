@@ -20,7 +20,7 @@ const mysql = require('mysql2');
 const connection = mysql.createConnection({...});
 
 // After (SingleStore Node.js Driver)
-const singlestore = require('singlestore_nodejs');
+const singlestore = require('singlestore-nodejs');
 const connection = singlestore.createConnection({...});
 
 // All existing queries work as-is!
@@ -29,3 +29,13 @@ const connection = singlestore.createConnection({...});
 :::info
 If you find any incompatibility with [node-mysql2][node-mysql2] or issues specific to SingleStoreDB, please report via GitHub issue. We will address reported issues on priority basis.
 :::
+
+## LOAD DATA LOCAL INFILE
+
+Bulk load from the **client** (not the server disk):
+
+- **`infileStreamFactory(path)`** — connection and/or query option; return a `Readable` for the path the server requests (typical for files on the app host).
+- **`infileStream`** — query option only; upload in-memory bytes; SQL filename is ignored. See [extras: LOAD DATA LOCAL INFILE](/docs/documentation/extras#load-data-local-infile).
+- **`local_infile`** — connection option (default `true`); set `false` to disable local file and stream loads.
+
+Compatible with [SingleStore stream-based load](https://docs.singlestore.com/db/v9.1/load-data/load-data-from-files/load-data-from-local-files/).
