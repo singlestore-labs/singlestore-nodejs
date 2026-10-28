@@ -45,23 +45,26 @@ connection.query(options, (err, results) => {
 
 In addition to sending local fs files you can send any stream using `infileStreamFactory` query option. If set, it has to be a function that return a readable stream. It gets file path from query as a parameter.
 
-Note: starting from version 2.0 `infileStreamFactory` is required parameter for `LOAD DATA LOCAL INFILE`. Response from server indicates that it wants access to a local file and no `infileStreamFactory` option is provided the query ends with error.
+To upload bytes that are already in memory, pass `infileStream`. The server still asks for a filename, and that filename is ignored. Chunks do not need to end on a row boundary.
+
+`local_infile` defaults to `true`. Set it to `false` (or `local_infile=false` on a connection URI) to refuse both file and in-memory `LOAD DATA LOCAL INFILE` loads with the same client error.
+
+Note: starting from version 2.0 the client does not open a filesystem path on its own. Provide `infileStream` or `infileStreamFactory`. If neither is set, the query ends with an error.
 
 ```js
-// local file
+// local file — open it from infileStreamFactory, shown below
 connection.query(
   'LOAD DATA LOCAL INFILE "/tmp/data.csv" INTO TABLE test FIELDS TERMINATED BY ? (id, title)',
   onInserted1
 );
-// local stream
+// local stream. The filename in the SQL is ignored.
+const { Readable } = require('stream');
 const sql =
-  'LOAD DATA LOCAL INFILE "mystream" INTO TABLE test FIELDS TERMINATED BY ? (id, title)';
+  "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE test FIELDS TERMINATED BY ',' (id, title)";
 connection.query(
   {
     sql: sql,
-    infileStreamFactory: function (path) {
-      return getStream();
-    },
+    infileStream: Readable.from(['1,2,3\n', '4,5,6\n7,8,9\n']),
   },
   onInserted2
 );
