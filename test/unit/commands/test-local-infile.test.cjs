@@ -60,6 +60,25 @@ assert.equal(payload(connection.packets[0]), '1,2,3\n');
 assert.equal(payload(connection.packets[1]), '4,5');
 assert.equal(payload(connection.packets[2]), ',6\n');
 
+// Readable.from() emits string chunks (same as docs); PassThrough can too.
+const stringStream = new PassThrough();
+const stringQuery = new Query(
+  {
+    sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE t",
+    infileStream: stringStream,
+  },
+  () => {}
+);
+const stringConnection = new FakeConnection();
+stringQuery._streamLocalInfile(stringConnection, ':stream:');
+stringStream.write('31,From Memory\n');
+stringStream.write('32,Still');
+stringStream.end(' Memory\n');
+assert.equal(payload(stringConnection.packets[0]), '31,From Memory\n');
+assert.equal(payload(stringConnection.packets[1]), '32,Still');
+assert.equal(payload(stringConnection.packets[2]), ' Memory\n');
+stringQuery._unpipeStream();
+
 let seenPath;
 const fallback = new Query(
   { sql: "LOAD DATA LOCAL INFILE 'requested.csv' INTO TABLE t" },
@@ -204,3 +223,24 @@ const execute = new Execute(
 );
 assert.equal(execute._streamFactory, executeFactory);
 assert.equal(execute._infileStream, null);
+assert.equal(Execute.prototype.infileOk, Query.prototype.infileOk);
+
+const executeStream = new PassThrough();
+const executeInfile = new Execute(
+  {
+    statement: { id: 1 },
+    sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE t",
+    values: [],
+    infileStream: executeStream,
+  },
+  () => {}
+);
+const executeConn = new FakeConnection();
+const executeNext = executeInfile._streamLocalInfile(executeConn, ':stream:');
+assert.equal(
+  executeNext,
+  Execute.prototype.infileOk,
+  'Execute must stay on infileOk until server OK after LOCAL INFILE upload'
+);
+executeStream.end();
+executeInfile._unpipeStream();

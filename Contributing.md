@@ -1,55 +1,54 @@
 [node-mysql]: https://github.com/mysqljs/mysql
-[docs-contributing]: https://sidorares.github.io/node-mysql2/docs/contributing/website
+[node-mysql2]: https://github.com/sidorares/node-mysql2
+[docs-contributing]: https://singlestore-labs.github.io/singlestore-nodejs/docs/contributing
+[singlestore-docs]: https://docs.singlestore.com/
 
 # Contributing Guidelines
 
 ## Introduction
 
-Contributions are always welcomed. You can help **MySQL2** community in various ways. Here are our major priorities, listed in order of importance:
+Contributions are always welcome. You can help the **singlestore-nodejs** community in various ways. Here are our major priorities, listed in order of importance:
 
-- [Node MySQL][node-mysql] API incompatibility fixes
+- SingleStore compatibility and [Node MySQL][node-mysql] / [node-mysql2][node-mysql2] API alignment where it matters
 - [Documentation][docs-contributing]
 - Adding tests or improving existing ones
 - Improving benchmarks
-- Bug Fixes
-- TODO from source
+- Bug fixes
 - Performance improvements
-- Add Features
+- New features
 
 ---
 
 ## Security Issues
 
-Please contact project maintainers privately before opening a security issue on Github. It will allow us to fix the issue before attackers know about it.
+Please contact project maintainers privately before opening a security issue on GitHub. That allows us to fix the issue before it is widely known.
 
 ### Contact
 
-- Andrey Sidorov, sidorares@yandex.ru
+- Open a private security advisory on [singlestore-labs/singlestore-nodejs](https://github.com/singlestore-labs/singlestore-nodejs) when possible.
 
 ---
 
 ## New Features
 
-It's better to discuss an API before actually start implementing it. You can open an issue on Github. We can discuss design of API and implementation ideas.
+It is better to discuss an API before implementing it. Open an issue on GitHub so we can agree on design and implementation.
 
 ---
 
 ## Development
 
-We assume you already have these tools installed on your system:
+You need:
 
-- MySQL Server
-- Node.JS
+- A **SingleStore**  server for integration tests (CI uses [SingleStore dev](https://github.com/singlestore-labs/singlestoredb-dev))
+- **Node.js** 20+ (matches CI)
 
-As **MySQL2** is purely JS based, you can develop it on Linux, Mac or Windows. Please follow these steps
+The driver is pure JavaScript, so you can develop on Linux, macOS, or Windows:
 
 ```bash
-# clone node-mysql2
-git clone https://github.com/sidorares/node-mysql2.git
+git clone https://github.com/singlestore-labs/singlestore-nodejs.git
 
-cd /path/to/node-mysql2
+cd singlestore-nodejs
 
-# install node modules
 npm install
 ```
 
@@ -57,21 +56,14 @@ npm install
 
 ### Commits and Pull Request Titles
 
-To ensure a clean commit history pattern, please use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) format.
+Use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) format.
 
-Prefixes that will trigger a new release version:
+Prefixes that trigger a release version:
 
-- `fix:` for patches, e.g., bug fixes that result in a patch version release.
-- `feat:` for new features, e.g., additions that result in a minor version release.
+- `fix:` — patch release
+- `feat:` — minor release
 
-Examples:
-
-- `fix: message`
-- `feat: message`
-- `docs: message`
-- `fix(module): message`
-- `feat(module): message`
-- etc.
+Examples: `fix: message`, `feat: message`, `docs: message`, `fix(module): message`
 
 ---
 
@@ -79,50 +71,68 @@ Examples:
 
 #### Fixes
 
-Where possible, provide an error test case that your fix covers.
+Where possible, add a test that fails without your fix.
 
 #### Features
 
-Please ensure test cases to cover your features.
+Add tests that cover the new behavior.
 
 ---
 
 ### Running Tests
 
-Running tests requires MySQL server and an empty database. You can run `bash` command given below to create `test` database
+Integration tests need a running database and a `test` database. **CI** uses the `ghcr.io/singlestore-labs/singlestoredb-dev` image on port **3306** with user **root** and a non-empty `ROOT_PASSWORD` (see [`.github/workflows/tests.yml`](.github/workflows/tests.yml)).
+
+#### Local SingleStore dev (recommended)
 
 ```bash
-# assuming MySQL have a user root with no password
-echo "CREATE DATABASE test;" | mysql -uroot
+docker run -d --name singlestore-dev -p 3306:3306 \
+  -e ROOT_PASSWORD=pass \
+  ghcr.io/singlestore-labs/singlestoredb-dev
 ```
 
+Create the test database (password must match `ROOT_PASSWORD`):
+
+```bash
+mysql -h127.0.0.1 -P3306 -uroot -ppass -e "CREATE DATABASE IF NOT EXISTS test;"
+```
+
+#### Environment variables
+
+Match CI so `test/common.test.cjs` picks up your password (`CI=1` enables `MYSQL_PASSWORD`):
+
 ```sh
-# Run once to setup the local environment variables.
-export CI=1;
-export MYSQL_HOST='127.0.0.1';
-export MYSQL_USER='root';
-export MYSQL_PASSWORD='';
-export MYSQL_DATABASE='test';
+export CI=1
+export MYSQL_HOST=127.0.0.1
+export MYSQL_PORT=3306
+export MYSQL_USER=root
+export MYSQL_PASSWORD=pass
+export MYSQL_DATABASE=test
 
-# If test user has no password, unset the `CI` variable.
-
-# Run the full test suite
 npm run test
 ```
 
-Use `FILTER` environment variable to run a subset of tests with matching names, e.g.
+For a plain local MySQL with **no** root password, omit `CI` and leave `MYSQL_PASSWORD` unset; the harness defaults to an empty password.
+
+#### Subset of tests
 
 ```sh
-FILTER='test-timestamp' npm run test
-# or
-FILTER='timeout' npm run test
+FILTER='test-load-infile' npm run test
 ```
 
-> [!Tip]
-> You can also run a single test by performing `node ./test/path-to-test-file`.
+Or run one file:
 
-For testing **coverage**:
+```sh
+node ./test/integration/connection/test-load-infile.test.cjs
+node ./test/manual/smoke-load-infile.cjs
+```
+
+Some tests call `SET GLOBAL local_infile = true`; that requires sufficient privileges on the server (SingleStore dev typically allows it).
+
+#### Coverage
 
 ```bash
 npm run coverage-test
 ```
+
+For server setup details, see [SingleStore documentation][singlestore-docs].
