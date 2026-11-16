@@ -86,14 +86,19 @@ Integration tests need a running database and a `test` database. **CI** uses the
 #### Local SingleStore dev (recommended)
 
 ```bash
-docker run -d --name singlestore-dev -p 3306:3306 \
+docker run -d --name singlestore-dev -p 127.0.0.1:3306:3306 \
   -e ROOT_PASSWORD=pass \
   ghcr.io/singlestore-labs/singlestoredb-dev
 ```
 
-Create the test database (password must match `ROOT_PASSWORD`):
+On large machines, cap the dev container so it does not take the whole host: if your machine has **more than 8 CPU cores**, add `--cpus=8` to `docker run`; if it has **more than 64 GB of RAM**, add `--memory=64g`. Skip either limit when your host is already at or below that threshold.
+
+Wait until the server accepts connections, then create the test database (password must match `ROOT_PASSWORD`):
 
 ```bash
+until mysql -h127.0.0.1 -P3306 -uroot -ppass -e "SELECT 1" >/dev/null 2>&1; do
+  sleep 2
+done
 mysql -h127.0.0.1 -P3306 -uroot -ppass -e "CREATE DATABASE IF NOT EXISTS test;"
 ```
 
@@ -109,8 +114,10 @@ export MYSQL_USER=root
 export MYSQL_PASSWORD=pass
 export MYSQL_DATABASE=test
 
-npm run test
+bash run-all-tests.sh
 ```
+
+**CI** runs the same `bash run-all-tests.sh` script (see [`.github/workflows/tests.yml`](.github/workflows/tests.yml)). It skips entries listed in [`test-to-skip.txt`](test-to-skip.txt)—integration tests that are not supported or do not apply on SingleStore—so local full-suite results match CI. `npm run test` runs Poku over `test/esm`, `test/unit`, and `test/integration` **without** that skip list; use it for quick iteration or filtered runs, not as a CI parity check.
 
 For a plain local MySQL with **no** root password, omit `CI` and leave `MYSQL_PASSWORD` unset; the harness defaults to an empty password.
 
