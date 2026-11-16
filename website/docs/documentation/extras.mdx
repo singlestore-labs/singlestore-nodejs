@@ -45,10 +45,10 @@ connection.query(options, (err, results) => {
 
 Bulk-load tabular data with `LOAD DATA LOCAL INFILE`. **Local** means the bytes come from your Node.js process (a file on the app host or an in-memory stream), not from the SingleStore server filesystem. See also [SingleStore: Load Data from Local Files](https://docs.singlestore.com/db/v9.1/load-data/load-data-from-files/load-data-from-local-files/) (including stream-based loads).
 
-| Source | Option | Notes |
-| --- | --- | --- |
-| File on the client machine | `infileStreamFactory(path)` | Called with the path from the server; return a `Readable` (for example `fs.createReadStream(path)`). Connection-level or per-query. |
-| Bytes in memory | `infileStream` | Per-query only. Server filename is **ignored**; use `':stream:'` in SQL if you like. Chunks need not align to row boundaries. Takes precedence over `infileStreamFactory`. |
+| Source                     | Option                      | Notes                                                                                                                                                                      |
+| -------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| File on the client machine | `infileStreamFactory(path)` | Called with the path from the server; return a `Readable` (for example `fs.createReadStream(path)`). Connection-level or per-query.                                        |
+| Bytes in memory            | `infileStream`              | Per-query only. Server filename is **ignored**; use `':stream:'` in SQL if you like. Chunks need not align to row boundaries. Takes precedence over `infileStreamFactory`. |
 
 The driver does **not** open filesystem paths automatically. For every load you must supply `infileStream` or `infileStreamFactory`, or the query fails.
 
@@ -96,7 +96,7 @@ const singlestore = require('singlestore-nodejs');
 connection.query(
   {
     sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE test FIELDS TERMINATED BY ',' (id, title)",
-    infileStream: Readable.from(['1,2,3\n', '4,5,6\n7,8,9\n']),
+    infileStream: Readable.from(['1,Alpha\n', '2,Beta\n3,Gamma\n']),
   },
   onInserted
 );

@@ -60,8 +60,8 @@ assert.equal(payload(connection.packets[0]), '1,2,3\n');
 assert.equal(payload(connection.packets[1]), '4,5');
 assert.equal(payload(connection.packets[2]), ',6\n');
 
-// Readable.from() emits string chunks (same as docs); PassThrough can too.
-const stringStream = new PassThrough();
+// Readable.from() emits string chunks (same as docs); objectMode PassThrough does too.
+const stringStream = new PassThrough({ objectMode: true });
 const stringQuery = new Query(
   {
     sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE t",
@@ -78,6 +78,54 @@ assert.equal(payload(stringConnection.packets[0]), '31,From Memory\n');
 assert.equal(payload(stringConnection.packets[1]), '32,Still');
 assert.equal(payload(stringConnection.packets[2]), ' Memory\n');
 stringQuery._unpipeStream();
+
+const emptyChunkStream = new PassThrough();
+const emptyChunkQuery = new Query(
+  {
+    sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE t",
+    infileStream: emptyChunkStream,
+  },
+  () => {}
+);
+const emptyChunkConnection = new FakeConnection();
+emptyChunkQuery._streamLocalInfile(emptyChunkConnection, ':stream:');
+emptyChunkStream.write('');
+emptyChunkStream.write('after-empty\n');
+emptyChunkStream.end();
+assert.equal(emptyChunkConnection.packets.length, 1);
+assert.equal(payload(emptyChunkConnection.packets[0]), 'after-empty\n');
+process.nextTick(() => {
+  assert.equal(emptyChunkConnection.packets.length, 2);
+  assert.equal(
+    emptyChunkConnection.packets[
+      emptyChunkConnection.packets.length - 1
+    ].length(),
+    4
+  );
+  emptyChunkQuery._unpipeStream();
+});
+
+const badChunkStream = new PassThrough({ objectMode: true });
+const badChunkQuery = new Query(
+  {
+    sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE t",
+    infileStream: badChunkStream,
+  },
+  () => {}
+);
+const badChunkConnection = new FakeConnection();
+badChunkQuery._streamLocalInfile(badChunkConnection, ':stream:');
+badChunkStream.write(42);
+assert.equal(
+  badChunkQuery._localStreamError.message,
+  'LOCAL INFILE stream must emit Buffer or string chunks'
+);
+assert.equal(badChunkConnection.packets.length, 1);
+assert.equal(badChunkConnection.packets[0].length(), 4);
+badChunkStream.emit('error', new Error('late stream failure'));
+assert.equal(badChunkConnection.packets.length, 1);
+badChunkStream.end();
+badChunkQuery._unpipeStream();
 
 let seenPath;
 const fallback = new Query(

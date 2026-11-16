@@ -39,7 +39,7 @@ It is better to discuss an API before implementing it. Open an issue on GitHub s
 
 You need:
 
-- A **SingleStore**  server for integration tests (CI uses [SingleStore dev](https://github.com/singlestore-labs/singlestoredb-dev))
+- A **SingleStore** server for integration tests (CI uses [SingleStore dev](https://github.com/singlestore-labs/singlestoredb-dev))
 - **Node.js** 20+ (matches CI)
 
 The driver is pure JavaScript, so you can develop on Linux, macOS, or Windows:
@@ -124,7 +124,6 @@ Or run one file:
 
 ```sh
 node ./test/integration/connection/test-load-infile.test.cjs
-node ./test/manual/smoke-load-infile.cjs
 ```
 
 Some tests call `SET GLOBAL local_infile = true`; that requires sufficient privileges on the server (SingleStore dev typically allows it).
