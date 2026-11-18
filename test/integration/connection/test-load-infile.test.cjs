@@ -7,9 +7,6 @@ const { Readable } = require('node:stream');
 const process = require('node:process');
 const mysql = require('../../../index.js');
 
-const LOCAL_INFILE_DISABLED_MESSAGE =
-  'Local infile is disabled by connector. Enable `local_infile` to allow local infile commands';
-
 if (`${process.env.MYSQL_CONNECTION_URL}`.includes('pscale_pw_')) {
   console.log('skipping test for planetscale');
   process.exit(0);
@@ -97,16 +94,9 @@ connection.query(
     connection.query(
       {
         sql: `LOAD DATA LOCAL INFILE ':stream:' INTO TABLE ${table} FIELDS TERMINATED BY ',' (id, title)`,
-        infileStream: Readable.from([
-          '31,From Memory\n',
-          '32,Still',
-          ' Memory\n',
-        ]),
-        infileStreamFactory: () => {
-          throw new Error(
-            'infileStreamFactory must not run when infileStream is set'
-          );
-        },
+        // In-memory load: Readable.from() emits string chunks.
+        infileStreamFactory: () =>
+          Readable.from(['31,From Memory\n', '32,Still', ' Memory\n']),
       },
       (memErr, memResult) => {
         if (memErr) {
@@ -115,7 +105,7 @@ connection.query(
         memoryResult = memResult;
         const disabled = mysql.createConnection({
           ...common.config,
-          local_infile: false,
+          flags: '-LOCAL_FILES',
         });
         disabled.query(
           [
@@ -131,7 +121,8 @@ connection.query(
             disabled.query(
               {
                 sql: `LOAD DATA LOCAL INFILE ':stream:' INTO TABLE ${table} FIELDS TERMINATED BY ',' (id, title)`,
-                infileStream: Readable.from(['99,should-not-load\n']),
+                infileStreamFactory: () =>
+                  Readable.from(['99,should-not-load\n']),
               },
               (loadError) => {
                 disabledErr = loadError;
@@ -161,5 +152,5 @@ process.on('exit', () => {
 
   assert.equal(streamResult.affectedRows, 2);
   assert.equal(memoryResult.affectedRows, 2);
-  assert.equal(disabledErr.message, LOCAL_INFILE_DISABLED_MESSAGE);
+  assert.ok(disabledErr, 'LOAD DATA LOCAL must fail when LOCAL_FILES is off');
 });

@@ -88,7 +88,7 @@ SingleStore Node.js Driver is mostly API compatible with [node-mysql][node-mysql
 - **Consistent Data Type Handling**: Handles SingleStore data types more consistently than generic MySQL drivers
 - **Configurable Connection Behavior**: Allows you to configure connection behavior by setting session variables
 - **MySQL Compatibility**: Maintains full compatibility with MySQL wire protocol
-- **Bulk load**: `LOAD DATA LOCAL INFILE` from client files (`infileStreamFactory`) or in-memory streams (`infileStream`)
+- **Bulk load**: `LOAD DATA LOCAL INFILE` from client files or in-memory streams (`infileStreamFactory`)
 
 For more information about SingleStore, visit the [official documentation][singlestore-docs].
 
@@ -153,10 +153,12 @@ const connection = singlestore.createConnection({...});
 
 Use `LOAD DATA LOCAL INFILE` to bulk-load CSV (or other `LOAD DATA` formats) into SingleStore. The driver reads data on the **client** (your Node process), not from the database server disk.
 
-- **Local file:** set `infileStreamFactory` on the connection or query so the driver opens the path the server requests (for example `fs.createReadStream(path)`).
-- **In-memory stream:** pass `infileStream` on the query (a Node.js `Readable`). The filename in SQL is ignored; use a placeholder such as `':stream:'`. This matches [SingleStore stream-based load](https://docs.singlestore.com/db/v9.1/load-data/load-data-from-files/load-data-from-local-files/).
+Set `infileStreamFactory` on the connection or query. The driver calls it with the filename from the SQL and uploads the `Readable` it returns.
 
-`local_infile` defaults to `true`. Set `local_infile: false` to refuse file and stream loads on that connection.
+- **Local file:** return `fs.createReadStream(path)` (validate `path` first).
+- **In-memory stream:** ignore `path` and return any `Readable`, for example `Readable.from(['1,a\n', '2,b\n'])`. Use a placeholder filename such as `':stream:'` in SQL.
+
+LOCAL INFILE is enabled by default. Use `flags: '-LOCAL_FILES'` to disable it on a connection.
 
 See [LOAD DATA LOCAL INFILE][docs-load-data] for examples.
 

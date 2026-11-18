@@ -45,14 +45,11 @@ connection.query(options, (err, results) => {
 
 Bulk-load tabular data with `LOAD DATA LOCAL INFILE`. **Local** means the bytes come from your Node.js process (a file on the app host or an in-memory stream), not from the SingleStore server filesystem. See also [SingleStore: Load Data from Local Files](https://docs.singlestore.com/db/v9.1/load-data/load-data-from-files/load-data-from-local-files/) (including stream-based loads).
 
-| Source                     | Option                      | Notes                                                                                                                                                                      |
-| -------------------------- | --------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| File on the client machine | `infileStreamFactory(path)` | Called with the path from the server; return a `Readable` (for example `fs.createReadStream(path)`). Connection-level or per-query.                                        |
-| Bytes in memory            | `infileStream`              | Per-query only. Server filename is **ignored**; use `':stream:'` in SQL if you like. Chunks need not align to row boundaries. Takes precedence over `infileStreamFactory`. |
+Both sources use the `infileStreamFactory(path)` option. It can be set on the connection or per query. The driver calls it with the filename from the SQL and uploads whatever `Readable` it returns. The stream may emit `Buffer` or string chunks, and chunks don't need to line up with row boundaries. A per-query `infileStreamFactory` overrides the connection-level one.
 
-The driver does **not** open filesystem paths automatically. For every load you must supply `infileStream` or `infileStreamFactory`, or the query fails.
+The driver does **not** open filesystem paths automatically. If no `infileStreamFactory` is set, the load fails.
 
-`local_infile` defaults to `true` (client advertises `LOCAL_FILES`). Set `local_infile: false` or `local_infile=false` on a connection URI to block file and in-memory loads with a clear client error.
+LOCAL INFILE is enabled by default (the client sends the `LOCAL_FILES` flag). To turn it off for a connection, use `flags: '-LOCAL_FILES'`. The driver then refuses the upload even if the server asks for a file.
 
 ### Load from a local file
 
@@ -87,7 +84,7 @@ connection.query(
 
 ### Stream from memory (no file on disk)
 
-Pass `infileStream` on the query. The filename in the SQL is ignored.
+Return an in-memory stream from `infileStreamFactory` and ignore the `path` argument. The filename in the SQL can be any placeholder, such as `':stream:'`.
 
 ```js
 const { Readable } = require('stream');
@@ -96,7 +93,8 @@ const singlestore = require('singlestore-nodejs');
 connection.query(
   {
     sql: "LOAD DATA LOCAL INFILE ':stream:' INTO TABLE test FIELDS TERMINATED BY ',' (id, title)",
-    infileStream: Readable.from(['1,Alpha\n', '2,Beta\n3,Gamma\n']),
+    infileStreamFactory: () =>
+      Readable.from(['1,Alpha\n', '2,Beta\n3,Gamma\n']),
   },
   onInserted
 );

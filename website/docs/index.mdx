@@ -151,8 +151,8 @@ connection.query(
 
 Use `LOAD DATA LOCAL INFILE` to bulk-load into SingleStore from the **client** (your Node app), not from the server disk.
 
-- **Local file:** `infileStreamFactory` on the connection or query (for example `fs.createReadStream(path)`).
-- **In-memory stream:** `infileStream` on the query; the filename in SQL is ignored.
+- **Local file:** set `infileStreamFactory` on the connection or query and return `fs.createReadStream(path)`.
+- **In-memory stream:** return any `Readable` (for example `Readable.from([...])`) from `infileStreamFactory`, ignoring the path.
 
 Details and examples: [LOAD DATA LOCAL INFILE](/docs/documentation/extras#load-data-local-infile).
 

@@ -34,8 +34,7 @@ If you find any incompatibility with [node-mysql2][node-mysql2] or issues specif
 
 Bulk load from the **client** (not the server disk):
 
-- **`infileStreamFactory(path)`** — connection and/or query option; return a `Readable` for the path the server requests (typical for files on the app host).
-- **`infileStream`** — query option only; upload in-memory bytes; SQL filename is ignored. See [extras: LOAD DATA LOCAL INFILE](/docs/documentation/extras#load-data-local-infile).
-- **`local_infile`** — connection option (default `true`); set `false` to disable local file and stream loads.
+- **`infileStreamFactory(path)`**: connection and/or query option. Return a `Readable` for the requested path (a file on the app host), or ignore the path and return an in-memory stream. See [extras: LOAD DATA LOCAL INFILE](/docs/documentation/extras#load-data-local-infile).
+- Enabled by default. Use `flags: '-LOCAL_FILES'` to disable it on a connection.
 
 Compatible with [SingleStore stream-based load](https://docs.singlestore.com/db/v9.1/load-data/load-data-from-files/load-data-from-local-files/).
