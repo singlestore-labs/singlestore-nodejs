@@ -23,7 +23,7 @@
 [docs-promise-wrapper]: https://singlestore-labs.github.io/singlestore-nodejs/documentation/promise-wrapper
 [docs-authentication-switch]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/authentication-switch
 [docs-load-data]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/extras#load-data-local-infile
-[docs-streams]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/extras#connecting-using-custom-stream
+[docs-streams]: https://sidorares.github.io/node-mysql2/docs/documentation/extras
 [docs-typescript-docs]: https://sidorares.github.io/node-mysql2/docs/documentation/typescript-examples
 [docs-qs-pooling]: https://singlestore-labs.github.io/singlestore-nodejs/docs#using-connection-pools
 [docs-qs-first-query]: https://singlestore-labs.github.io/singlestore-nodejs/docs#first-query
@@ -158,7 +158,7 @@ Set `infileStreamFactory` on the connection or query. The driver calls it with t
 - **Local file:** return `fs.createReadStream(path)` (validate `path` first).
 - **In-memory stream:** ignore `path` and return any `Readable`, for example `Readable.from(['1,a\n', '2,b\n'])`. Use a placeholder filename such as `':stream:'` in SQL.
 
-LOCAL INFILE is enabled by default. Use `flags: '-LOCAL_FILES'` to disable it on a connection.
+The driver advertises LOCAL INFILE support by default, but it never reads files on its own: nothing is uploaded unless you provide `infileStreamFactory`, and that function decides what is sent. Use `flags: '-LOCAL_FILES'` to turn it off completely on a connection.
 
 See [LOAD DATA LOCAL INFILE][docs-load-data] for examples.
 

@@ -146,11 +146,14 @@ process.on('exit', () => {
 
   assert.equal(
     loadErr.message,
-    `As a result of LOCAL INFILE command server wants to read /does_not_exist.csv file, but as of v2.0 you must provide streamFactory option returning ReadStream.`
+    'Server requested local file /does_not_exist.csv for LOAD DATA LOCAL INFILE, but no infileStreamFactory option was provided.'
   );
   assert.equal(loadResult.affectedRows, 0);
 
   assert.equal(streamResult.affectedRows, 2);
   assert.equal(memoryResult.affectedRows, 2);
-  assert.ok(disabledErr, 'LOAD DATA LOCAL must fail when LOCAL_FILES is off');
+  // SingleStore refuses on the server before requesting the file, so the
+  // client-side LOCAL_FILES check never runs here (the unit test covers it).
+  assert.equal(disabledErr.code, 'ER_NOT_ALLOWED_COMMAND');
+  assert.equal(disabledErr.errno, 1148);
 });

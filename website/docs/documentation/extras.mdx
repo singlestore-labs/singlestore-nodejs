@@ -49,7 +49,7 @@ Both sources use the `infileStreamFactory(path)` option. It can be set on the co
 
 The driver does **not** open filesystem paths automatically. If no `infileStreamFactory` is set, the load fails.
 
-LOCAL INFILE is enabled by default (the client sends the `LOCAL_FILES` flag). To turn it off for a connection, use `flags: '-LOCAL_FILES'`. The driver then refuses the upload even if the server asks for a file.
+The driver advertises LOCAL INFILE support by default (the client sends the `LOCAL_FILES` flag), but it never reads files on its own: nothing is uploaded unless you provide `infileStreamFactory`, and that function decides what is sent. To turn it off completely for a connection, use `flags: '-LOCAL_FILES'`. The driver then refuses the upload even if the server asks for a file.
 
 ### Load from a local file
 

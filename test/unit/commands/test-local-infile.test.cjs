@@ -93,14 +93,30 @@ function load(options, connection = new FakeConnection(), path = 'x.csv') {
   });
 }
 
-// Non-string/Buffer chunks fail the load with one EOF and destroy the stream.
+// Uint8Array chunks (not Buffers) are accepted, including views with an offset.
+{
+  const stream = new PassThrough({ objectMode: true });
+  const { connection } = load({ infileStreamFactory: () => stream });
+  stream.write(new TextEncoder().encode('41,Uint8\n'));
+  const backing = new TextEncoder().encode('xx42,Offset\nyy');
+  stream.write(new Uint8Array(backing.buffer, 2, backing.length - 4));
+  stream.end();
+  assert.equal(payload(connection.packets[0]), '41,Uint8\n');
+  assert.equal(payload(connection.packets[1]), '42,Offset\n');
+  process.nextTick(() => {
+    assert.equal(connection.packets.length, 3);
+    assert.ok(isEof(connection.packets[2]));
+  });
+}
+
+// Other chunk types fail the load with one EOF and destroy the stream.
 {
   const stream = new PassThrough({ objectMode: true });
   const { query, connection } = load({ infileStreamFactory: () => stream });
   stream.write(42);
   assert.equal(
     query._localStreamError.message,
-    'LOCAL INFILE stream must emit Buffer or string chunks'
+    'LOCAL INFILE stream must emit Buffer, Uint8Array or string chunks'
   );
   assert.equal(connection.packets.length, 1);
   assert.ok(isEof(connection.packets[0]));
@@ -166,7 +182,10 @@ function load(options, connection = new FakeConnection(), path = 'x.csv') {
   });
   const { query } = load({ infileStreamFactory: null }, connection);
   assert.equal(called, false);
-  assert.match(query._localStreamError.message, /must provide streamFactory/);
+  assert.equal(
+    query._localStreamError.message,
+    'Server requested local file x.csv for LOAD DATA LOCAL INFILE, but no infileStreamFactory option was provided.'
+  );
   assert.equal(connection.packets.length, 1);
 }
 
@@ -184,6 +203,7 @@ function load(options, connection = new FakeConnection(), path = 'x.csv') {
     '/etc/passwd'
   );
   assert.equal(query._localStreamError.code, 'ER_CLIENT_LOCAL_FILES_DISABLED');
+  assert.equal(query._localStreamError.errno, undefined);
   assert.equal(connection.packets.length, 1);
   assert.ok(isEof(connection.packets[0]));
 }

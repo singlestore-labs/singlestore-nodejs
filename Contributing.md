@@ -1,54 +1,55 @@
 [node-mysql]: https://github.com/mysqljs/mysql
-[node-mysql2]: https://github.com/sidorares/node-mysql2
-[docs-contributing]: https://singlestore-labs.github.io/singlestore-nodejs/docs/contributing
-[singlestore-docs]: https://docs.singlestore.com/
+[docs-contributing]: https://sidorares.github.io/node-mysql2/docs/contributing/website
 
 # Contributing Guidelines
 
 ## Introduction
 
-Contributions are always welcome. You can help the **singlestore-nodejs** community in various ways. Here are our major priorities, listed in order of importance:
+Contributions are always welcomed. You can help **MySQL2** community in various ways. Here are our major priorities, listed in order of importance:
 
-- SingleStore compatibility and [Node MySQL][node-mysql] / [node-mysql2][node-mysql2] API alignment where it matters
+- [Node MySQL][node-mysql] API incompatibility fixes
 - [Documentation][docs-contributing]
 - Adding tests or improving existing ones
 - Improving benchmarks
-- Bug fixes
+- Bug Fixes
+- TODO from source
 - Performance improvements
-- New features
+- Add Features
 
 ---
 
 ## Security Issues
 
-Please contact project maintainers privately before opening a security issue on GitHub. That allows us to fix the issue before it is widely known.
+Please contact project maintainers privately before opening a security issue on Github. It will allow us to fix the issue before attackers know about it.
 
 ### Contact
 
-- Open a private security advisory on [singlestore-labs/singlestore-nodejs](https://github.com/singlestore-labs/singlestore-nodejs) when possible.
+- Andrey Sidorov, sidorares@yandex.ru
 
 ---
 
 ## New Features
 
-It is better to discuss an API before implementing it. Open an issue on GitHub so we can agree on design and implementation.
+It's better to discuss an API before actually start implementing it. You can open an issue on Github. We can discuss design of API and implementation ideas.
 
 ---
 
 ## Development
 
-You need:
+We assume you already have these tools installed on your system:
 
-- A **SingleStore** server for integration tests (CI uses [SingleStore dev](https://github.com/singlestore-labs/singlestoredb-dev))
-- **Node.js** 20+ (matches CI)
+- MySQL Server
+- Node.JS
 
-The driver is pure JavaScript, so you can develop on Linux, macOS, or Windows:
+As **MySQL2** is purely JS based, you can develop it on Linux, Mac or Windows. Please follow these steps
 
 ```bash
-git clone https://github.com/singlestore-labs/singlestore-nodejs.git
+# clone node-mysql2
+git clone https://github.com/sidorares/node-mysql2.git
 
-cd singlestore-nodejs
+cd /path/to/node-mysql2
 
+# install node modules
 npm install
 ```
 
@@ -56,14 +57,21 @@ npm install
 
 ### Commits and Pull Request Titles
 
-Use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) format.
+To ensure a clean commit history pattern, please use the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/#summary) format.
 
-Prefixes that trigger a release version:
+Prefixes that will trigger a new release version:
 
-- `fix:` — patch release
-- `feat:` — minor release
+- `fix:` for patches, e.g., bug fixes that result in a patch version release.
+- `feat:` for new features, e.g., additions that result in a minor version release.
 
-Examples: `fix: message`, `feat: message`, `docs: message`, `fix(module): message`
+Examples:
+
+- `fix: message`
+- `feat: message`
+- `docs: message`
+- `fix(module): message`
+- `feat(module): message`
+- etc.
 
 ---
 
@@ -71,74 +79,50 @@ Examples: `fix: message`, `feat: message`, `docs: message`, `fix(module): messag
 
 #### Fixes
 
-Where possible, add a test that fails without your fix.
+Where possible, provide an error test case that your fix covers.
 
 #### Features
 
-Add tests that cover the new behavior.
+Please ensure test cases to cover your features.
 
 ---
 
 ### Running Tests
 
-Integration tests need a running database and a `test` database. **CI** uses the `ghcr.io/singlestore-labs/singlestoredb-dev` image on port **3306** with user **root** and a non-empty `ROOT_PASSWORD` (see [`.github/workflows/tests.yml`](.github/workflows/tests.yml)).
-
-#### Local SingleStore dev (recommended)
+Running tests requires MySQL server and an empty database. You can run `bash` command given below to create `test` database
 
 ```bash
-docker run -d --name singlestore-dev -p 127.0.0.1:3306:3306 \
-  -e ROOT_PASSWORD=pass \
-  ghcr.io/singlestore-labs/singlestoredb-dev
+# assuming MySQL have a user root with no password
+echo "CREATE DATABASE test;" | mysql -uroot
 ```
-
-On large machines, cap the dev container so it does not take the whole host: if your machine has **more than 8 CPU cores**, add `--cpus=8` to `docker run`; if it has **more than 64 GB of RAM**, add `--memory=64g`. Skip either limit when your host is already at or below that threshold.
-
-Wait until the server accepts connections, then create the test database (password must match `ROOT_PASSWORD`):
-
-```bash
-until mysql -h127.0.0.1 -P3306 -uroot -ppass -e "SELECT 1" >/dev/null 2>&1; do
-  sleep 2
-done
-mysql -h127.0.0.1 -P3306 -uroot -ppass -e "CREATE DATABASE IF NOT EXISTS test;"
-```
-
-#### Environment variables
-
-Match CI so `test/common.test.cjs` picks up your password (`CI=1` enables `MYSQL_PASSWORD`):
 
 ```sh
-export CI=1
-export MYSQL_HOST=127.0.0.1
-export MYSQL_PORT=3306
-export MYSQL_USER=root
-export MYSQL_PASSWORD=pass
-export MYSQL_DATABASE=test
+# Run once to setup the local environment variables.
+export CI=1;
+export MYSQL_HOST='127.0.0.1';
+export MYSQL_USER='root';
+export MYSQL_PASSWORD='';
+export MYSQL_DATABASE='test';
 
-bash run-all-tests.sh
+# If test user has no password, unset the `CI` variable.
+
+# Run the full test suite
+npm run test
 ```
 
-**CI** runs the same `bash run-all-tests.sh` script (see [`.github/workflows/tests.yml`](.github/workflows/tests.yml)). It skips entries listed in [`test-to-skip.txt`](test-to-skip.txt)—integration tests that are not supported or do not apply on SingleStore—so local full-suite results match CI. `npm run test` runs Poku over `test/esm`, `test/unit`, and `test/integration` **without** that skip list; use it for quick iteration or filtered runs, not as a CI parity check.
-
-For a plain local MySQL with **no** root password, omit `CI` and leave `MYSQL_PASSWORD` unset; the harness defaults to an empty password.
-
-#### Subset of tests
+Use `FILTER` environment variable to run a subset of tests with matching names, e.g.
 
 ```sh
-FILTER='test-load-infile' npm run test
+FILTER='test-timestamp' npm run test
+# or
+FILTER='timeout' npm run test
 ```
 
-Or run one file:
+> [!Tip]
+> You can also run a single test by performing `node ./test/path-to-test-file`.
 
-```sh
-node ./test/integration/connection/test-load-infile.test.cjs
-```
-
-Some tests call `SET GLOBAL local_infile = true`; that requires sufficient privileges on the server (SingleStore dev typically allows it).
-
-#### Coverage
+For testing **coverage**:
 
 ```bash
 npm run coverage-test
 ```
-
-For server setup details, see [SingleStore documentation][singlestore-docs].
