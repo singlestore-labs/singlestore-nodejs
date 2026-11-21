@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.0.2] - singlestore-nodejs (unreleased)
+
+### Bug Fixes
+
+- **LOAD DATA LOCAL INFILE:** string chunks are now encoded as UTF-8 instead of crashing with `data.copy is not a function`. This fixes in-memory loads such as `infileStreamFactory: () => Readable.from([...])`. Empty chunks are skipped.
+- **LOAD DATA LOCAL INFILE:** the end-of-file packet is sent only once, even if the stream errors after ending or errors more than once. Only the first stream error is reported.
+- **LOAD DATA LOCAL INFILE:** the connection `error` listener is now removed when the upload is torn down.
+- **LOAD DATA LOCAL INFILE:** if `LOCAL_FILES` is disabled (`flags: '-LOCAL_FILES'`), the client refuses the upload even when the server requests a file.
+- **Prepared statements / PoolCluster:** the connection-level `infileStreamFactory` is now passed through `statement.execute()` and `PoolCluster.query()`, and `Execute` waits for the server OK after an upload.
+
+### Documentation
+
+- README and site docs describe local-file and in-memory loads with `infileStreamFactory` wherever `LOAD DATA LOCAL INFILE` is documented.
+
 ## [3.14.3](https://github.com/sidorares/node-mysql2/compare/v3.14.2...v3.14.3) (2025-07-29)
 
 
