@@ -22,7 +22,7 @@
 [docs-mysql-server]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/mysql-server
 [docs-promise-wrapper]: https://singlestore-labs.github.io/singlestore-nodejs/documentation/promise-wrapper
 [docs-authentication-switch]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/authentication-switch
-[docs-streams]: https://sidorares.github.io/node-mysql2/docs/documentation/extras
+[docs-streams]: https://singlestore-labs.github.io/singlestore-nodejs/docs/documentation/extras#connecting-using-custom-stream
 [docs-typescript-docs]: https://sidorares.github.io/node-mysql2/docs/documentation/typescript-examples
 [docs-qs-pooling]: https://singlestore-labs.github.io/singlestore-nodejs/docs#using-connection-pools
 [docs-qs-first-query]: https://singlestore-labs.github.io/singlestore-nodejs/docs#first-query
