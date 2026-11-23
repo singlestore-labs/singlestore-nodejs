@@ -3,7 +3,9 @@
 const common = require('../../common.test.cjs');
 const { assert } = require('poku');
 const fs = require('node:fs');
+const { Readable } = require('node:stream');
 const process = require('node:process');
+const mysql = require('../../../index.js');
 
 if (`${process.env.MYSQL_CONNECTION_URL}`.includes('pscale_pw_')) {
   console.log('skipping test for planetscale');
@@ -76,6 +78,8 @@ const createMyStream = function () {
 };
 
 let streamResult;
+let memoryResult;
+let disabledErr;
 connection.query(
   {
     sql: sql,
@@ -87,7 +91,50 @@ connection.query(
       throw err;
     }
     streamResult = result;
-    connection.end();
+    connection.query(
+      {
+        sql: `LOAD DATA LOCAL INFILE ':stream:' INTO TABLE ${table} FIELDS TERMINATED BY ',' (id, title)`,
+        // In-memory load: Readable.from() emits string chunks.
+        infileStreamFactory: () =>
+          Readable.from(['31,From Memory\n', '32,Still', ' Memory\n']),
+      },
+      (memErr, memResult) => {
+        if (memErr) {
+          throw memErr;
+        }
+        memoryResult = memResult;
+        const disabled = mysql.createConnection({
+          ...common.config,
+          flags: '-LOCAL_FILES',
+        });
+        disabled.query(
+          [
+            `CREATE TEMPORARY TABLE \`${table}\` (`,
+            '`id` int(11) unsigned NOT NULL,',
+            '`title` varchar(255)',
+            ')',
+          ].join('\n'),
+          (createErr) => {
+            if (createErr) {
+              throw createErr;
+            }
+            disabled.query(
+              {
+                sql: `LOAD DATA LOCAL INFILE ':stream:' INTO TABLE ${table} FIELDS TERMINATED BY ',' (id, title)`,
+                infileStreamFactory: () =>
+                  Readable.from(['99,should-not-load\n']),
+              },
+              (loadError) => {
+                disabledErr = loadError;
+                disabled.end(() => {
+                  connection.end();
+                });
+              }
+            );
+          }
+        );
+      }
+    );
   }
 );
 
@@ -99,9 +146,14 @@ process.on('exit', () => {
 
   assert.equal(
     loadErr.message,
-    `As a result of LOCAL INFILE command server wants to read /does_not_exist.csv file, but as of v2.0 you must provide streamFactory option returning ReadStream.`
+    'Server requested local file /does_not_exist.csv for LOAD DATA LOCAL INFILE, but no infileStreamFactory option was provided.'
   );
   assert.equal(loadResult.affectedRows, 0);
 
   assert.equal(streamResult.affectedRows, 2);
+  assert.equal(memoryResult.affectedRows, 2);
+  // SingleStore refuses on the server before requesting the file, so the
+  // client-side LOCAL_FILES check never runs here (the unit test covers it).
+  assert.equal(disabledErr.code, 'ER_NOT_ALLOWED_COMMAND');
+  assert.equal(disabledErr.errno, 1148);
 });
