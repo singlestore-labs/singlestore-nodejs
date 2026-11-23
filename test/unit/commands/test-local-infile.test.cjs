@@ -8,6 +8,7 @@ const { assert } = require('poku');
 const Query = require('../../../lib/commands/query.js');
 const Execute = require('../../../lib/commands/execute.js');
 const ClientConstants = require('../../../lib/constants/client.js');
+const Packets = require('../../../lib/packets/index.js');
 
 class FakeConnection extends EventEmitter {
   constructor(config) {
@@ -15,6 +16,9 @@ class FakeConnection extends EventEmitter {
     this.packets = [];
     this.stream = new EventEmitter();
     this.clientEncoding = 'utf8';
+    this.serverEncoding = 'utf8';
+    // Needed to parse the server's OK packet in infileOk().
+    this._handshakePacket = { capabilityFlags: ClientConstants.PROTOCOL_41 };
     this.config = {
       clientFlags: ClientConstants.LOCAL_FILES,
       ...config,
@@ -224,4 +228,68 @@ function load(options, connection = new FakeConnection(), path = 'x.csv') {
   assert.equal(typeof next, 'function');
   assert.equal(next, Query.prototype.infileOk);
   execute._unpipeStream();
+}
+
+// With a query timeout, a failed upload must call the callback exactly once:
+// the timer is cleared when the stream error is reported, and if the timer
+// already fired, the later server OK does not complete the query again.
+function okPacket() {
+  const packet = Packets.OK.toPacket({ affectedRows: 0 }, 'utf8');
+  packet.offset = packet.start + 4;
+  return packet;
+}
+
+function loadWithTimeout(options, connection, timeout) {
+  const calls = [];
+  const query = new Query(
+    { sql: "LOAD DATA LOCAL INFILE 'x.csv' INTO TABLE t", timeout, ...options },
+    (err) => calls.push(err)
+  );
+  query._setTimeout(); // what start() does
+  query._streamLocalInfile(connection, 'x.csv');
+  return { query, calls };
+}
+
+// LOCAL_FILES refusal, then server OK: one callback, no timeout afterwards.
+{
+  const connection = new FakeConnection({ clientFlags: 0 });
+  const { query, calls } = loadWithTimeout({}, connection, 20);
+  query.infileOk(okPacket(), connection);
+  assert.equal(query.queryTimeout, null);
+  setTimeout(() => {
+    assert.equal(calls.length, 1, 'callback must run once');
+    assert.equal(calls[0].code, 'ER_CLIENT_LOCAL_FILES_DISABLED');
+  }, 60);
+}
+
+// Invalid chunk, then server OK: one callback, no timeout afterwards.
+{
+  const stream = new PassThrough({ objectMode: true });
+  const connection = new FakeConnection();
+  const { query, calls } = loadWithTimeout(
+    { infileStreamFactory: () => stream },
+    connection,
+    20
+  );
+  stream.write(42);
+  query.infileOk(okPacket(), connection);
+  setTimeout(() => {
+    assert.equal(calls.length, 1, 'callback must run once');
+    assert.equal(
+      calls[0].message,
+      'LOCAL INFILE stream must emit Buffer, Uint8Array or string chunks'
+    );
+  }, 60);
+}
+
+// Timeout fires before the server OK: the late OK must not call back again.
+{
+  const connection = new FakeConnection({ clientFlags: 0 });
+  const { query, calls } = loadWithTimeout({}, connection, 10);
+  setTimeout(() => {
+    assert.equal(calls.length, 1);
+    assert.equal(calls[0].code, 'PROTOCOL_SEQUENCE_TIMEOUT');
+    query.infileOk(okPacket(), connection);
+    assert.equal(calls.length, 1, 'late server OK must not call back again');
+  }, 40);
 }
